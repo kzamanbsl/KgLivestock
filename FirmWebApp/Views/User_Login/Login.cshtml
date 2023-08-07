@@ -1,0 +1,102 @@
+﻿@model FirmWebApp.Models.LogInViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+@*<style>
+    .dd-md-inline {
+        display: none;
+    }
+
+    @@media (min-width: 768px) {
+        .cc {
+            height: auto;
+            margin-top: 100px
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .cc {
+            height: auto;
+            margin-top: 50px
+        }
+    }
+</style>
+<div class="row justify-content-center mb-5">
+    <div class="col-md-6">
+        <div class="card card-body shadow cc ">
+            <div class="gov-logo-login-ui text-center">
+                <img style="width:180px" src="~/KGFiles/kgecom.png" alt="Logo">
+
+
+            </div>
+
+            <form asp-action="Login">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <input type="text" required asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" required asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-2 ">
+                    <input type="submit" value="Login" class="btn btn-primary hvr-box-shadow-outset" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+*@
+
+<section class="text-center">
+    <!-- Background image -->
+    <!-- Background image -->
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-5-strong" style="
+                    margin-top: 100px;
+                    background: hsla(0, 0%, 100%, 0.8);
+                    backdrop-filter: blur(30px);
+                ">
+                    <div class="card-body py-5 px-md-5">
+                        <form asp-action="Login">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <!-- 2 column grid layout with text inputs for the first and last names -->
+                            @* <div class="row">
+                            <div class="col-md-3">
+
+                            </div>
+                            <div class="col-md-6">
+                            <script src="https://unpkg.com/@@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+                            <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_az2y8tee.json" background="transparent" speed="1" style="width: 250px; height: 150px;" loop autoplay></lottie-player>
+                            </div>
+
+                            </div>*@
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="form-outline">
+                                        <input type="text" required asp-for="UserName" class="form-control" placeholder="Username" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="form-outline">
+                                        <input required asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2 ">
+                                    <input type="submit" value="Sign In" class="btn btn-primary btn-block mb-4" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
