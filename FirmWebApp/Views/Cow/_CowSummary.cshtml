@@ -39,7 +39,65 @@
 
     body {
         padding: 30px;
+        background-color: white;
+        font-size: 12pt;
     }
+    
+
+    /*tr:last-child > td[colspan] {
+        border: none;
+    }*/
+   
+    .print-link {
+        text-align: right;
+    }
+
+    .print-tr {
+
+    }
+
+    .company-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .company-logo img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    .company-details {
+        margin-left: 20px;
+    }
+
+        .company-details p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+   
+    
+
+    @@media print {
+        body {
+            padding-left:0px;
+            background-color: white;
+            font-size: 12pt;
+        }
+        .print-link {
+            display: none;
+        }
+
+        .print-tr {
+            border: 1px solid black!important;
+            color:black!important;
+        }
+
+        
+
+    }
+
 /*
     li {
         list-style: none;
@@ -63,54 +121,71 @@
     }
 */
   
-    tr:last-child > td[colspan] {
-        border: none;
-    }
+   
 
 
 </style>
 <body>
-    <div class="wrapper">
+    <div class="print-link">
+        <a href="javascript:window.print()">Click to Print</a>
+    </div>
+    @*<div class="container row ">
+        <div class="company-info ">
+            <div class="company-logo">
+                <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
+            </div>
+            <div class="company-details">
+                <p><strong>Company Name:</strong> TCL AGRO DAIRY FIRM</p>
+                <p><strong>Address:</strong> Dhaka, Bangladesh</p>
+                <p><strong>Phone:</strong> 01700000000</p>
+                <p><strong>Print Date:</strong> @DateTime.Now</p>
+            </div>
+        </div>
+    </div>*@
+
+
+    <div class="wrapper print-margin">
         <!-- Main content -->
-    
+       
    
         <div class="container">
+         
             <table class="table table-sm table-striped">
               
                 <tbody>
                     <tr >
-                        <td  colspan="8"class="bg-warning text-center text-bold">Summary</td>
+                        <td  colspan="8"class="print-tr bg-warning text-center text-bold"> Summary </td>
                     </tr>
-                    <tr class="bg-secondary">
-                        <th>Tag No.</th>
+                    <tr >
+                        <th>Tag and Type</th>
                         <th>Breed</th>
-                        <th>Buying Price</th>
-                        <th>Treatment Cost</th>
-                        <th>Vaccine Cost</th>
-                        <th>Feeding Cost</th>
-                        <th>Total Cost</th>
-                        <th>Milk Produced</th>
+                        <th class="text-center">Buying Price</th>
+                        <th class="text-center">Treatment Cost</th>
+                        <th class="text-center">Vaccine Cost</th>
+                        <th class="text-center">Feeding Cost</th>
+                        <th class ="text-center">Total Cost</th>
+                        <th class="text-center">Milk Produced</th>
                     </tr>
                     <tr >
                         <th colspan="2"></th>
                        @* <th></th>*@
-                        <th>(A)</th>
-                        <th>(B)</th>
-                        <th>(C)</th>
-                        <th>(D)</th>
-                        <th>(E = A+B+C+D)</th>
-                        <th>F</th>
+                        <th class ="text-center">(A)</th>
+                        <th class="text-center">(B)</th>
+                        <th class="text-center">(C)</th>
+                        <th class="text-center">(D)</th>
+                        <th class="text-center">(E = A+B+C+D)</th>
+                        <th class="text-center">F</th>
                     </tr>
 
                     <tr>
-                        <td>@Model.TagId</td>
+                        <td>@Model.TagId (@Model.LivestockTypeName)</td>
                         <td>@Model.BreedName</td>
-                        <td>@Model.Price.ToString()</td>
-                        <td>@Model.cowSummaryVM.TotalTreatmentCost</td>
-                        <td>@Model.cowSummaryVM.TotalVaccineCost</td>
-                        <td>@Model.cowSummaryVM.TotalFeedingCost.ToString("0.00")</td>
-                        <td >@(Model.cowSummaryVM.TotalExpense.HasValue ? Model.cowSummaryVM.TotalExpense.Value.ToString("0.00") : 0) </td>
-                        <td class="text-success">@Model.cowSummaryVM.TotalMilkProduced <span>litre</span></td>
+                        <td class="text-right">@Model.Price.ToString()</td>
+                        <td class="text-right">@Model.cowSummaryVM.TotalTreatmentCost</td>
+                        <td class="text-right">@Model.cowSummaryVM.TotalVaccineCost</td>
+                        <td class="text-right">@Model.cowSummaryVM.TotalFeedingCost.ToString("0.00")</td>
+                        <td class="text-right">@(Model.cowSummaryVM.TotalExpense.HasValue ? Model.cowSummaryVM.TotalExpense.Value.ToString("0.00") : 0) </td>
+                        <td class="text-success text-right" >@Model.cowSummaryVM.TotalMilkProduced <span>litre</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -119,15 +194,15 @@
                     <table class="table table-sm  table-striped">
                        
                         <tbody>
-                            <tr>
-                                <td colspan="1" class="bg-olive text-center text-bold">Milk</td>
+                            <tr >
+                                <td colspan="1" class="print-tr bg-olive text-center text-bold">Milk</td>
                             </tr>
-                            <tr class="bg-secondary">
-                                <th>Total Produced Milk</th>
+                            <tr class="">
+                                <th class="text-center">Total Produced Milk</th>
                             </tr>
 
                             <tr>
-                                <td>@Model.cowSummaryVM.TotalMilkProduced <span>Litres</span></td>
+                                <td class="text-right">@Model.cowSummaryVM.TotalMilkProduced <span>Litres</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,16 +212,16 @@
                     <table class="table table-sm  table-striped">
                         <tbody>
                             <tr>
-                                <td colspan="2" class="bg-olive text-center text-bold">Feeding</td>
+                                <td colspan="2" class="print-tr bg-olive text-center text-bold">Feeding</td>
                             </tr>
-                            <tr class="bg-secondary">
+                            <tr class="">
 
-                                <th>Total Quantity</th>
-                                <th>Cost</th>
+                                <th class="text-center">Total Quantity</th>
+                                <th class="text-center">Cost</th>
                             </tr>
                             <tr>
-                                <td>@Model.cowSummaryVM.TotalFeedingQuantity</td>
-                                <td>@Model.cowSummaryVM.TotalFeedingCost.ToString("0.00") </td>
+                                <td class="text-right">@Model.cowSummaryVM.TotalFeedingQuantity</td>
+                                <td class="text-right">@Model.cowSummaryVM.TotalFeedingCost.ToString("0.00") </td>
                             </tr>
                         </tbody>
                     </table>
@@ -158,26 +233,26 @@
                     <table class="table table-sm  table-striped">
                         <tbody>
                             <tr>
-                                <td colspan="3" class="bg-olive text-center text-bold">Vaccine</td>
+                                <td colspan="3" class="print-tr bg-olive text-center text-bold">Vaccine</td>
                             </tr>
-                            <tr class="bg-secondary">
+                            <tr class="">
 
                                 <th>Date</th>
                                 <th>Description</th>
-                                <th>Cost</th>
+                                <th class="text-center">Cost</th>
                             </tr>
                             @foreach (var vaccine in Model.vaccineVMList)
                             {
                                 <tr>
                                     <td>@vaccine.VaccineDate</td>
                                     <td>@vaccine.Name</td>
-                                    <td>@vaccine.Price</td>
+                                    <td class="text-right">@vaccine.Price</td>
                                 </tr>
                             }
                             <tr>
 
-                                <td colspan="2">Total Vaccine Cost: </td>
-                                <td>@Model.cowSummaryVM.TotalTreatmentCost</td>
+                                <td colspan="2" class="text-center">Total Vaccine Cost: </td>
+                                <td class="text-right">@Model.cowSummaryVM.TotalVaccineCost</td>
                             </tr>
                         </tbody>
                     </table>
@@ -186,26 +261,26 @@
                     <table class="table table-sm  table-striped">
                         <tbody>
                             <tr>
-                                <td colspan="3" class="bg-olive text-center text-bold">Treatement</td>
+                                <td colspan="3" class="print-tr bg-olive print-tr text-center text-bold"> Treatement</td>
                             </tr>
-                            <tr class="bg-secondary">
+                            <tr class="">
 
                                 <th>Date</th>
                                 <th>Description</th>
-                                <th>Cost</th>
+                                <th class="text-center">Cost</th>
                             </tr>
                             @foreach (var treatement in Model.treatmentVMList)
                             {
                                 <tr>
                                     <td>@treatement.TreatmentDate</td>
                                     <td>@treatement.TreatmentDetails</td>
-                                    <td>@treatement.Price</td>
+                                    <td class="text-right">@treatement.Price</td>
                                 </tr>
                             }
                             <tr>
 
                                 <td colspan="2">Total Treatement Cost: </td>
-                                <td>@Model.cowSummaryVM.TotalTreatmentCost</td>
+                                <td class="text-right">@Model.cowSummaryVM.TotalTreatmentCost</td>
                             </tr>
                         </tbody>
                     </table>
@@ -214,10 +289,14 @@
         </div>
  </div>
 
-        <script>
+       @* <script>
             window.addEventListener("load", window.print());
-        </script>
+        </script>*@
 
+
+
+
+   
 </body>
 </html>
 
