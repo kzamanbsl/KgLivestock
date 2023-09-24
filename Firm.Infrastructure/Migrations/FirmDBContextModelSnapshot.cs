@@ -703,14 +703,14 @@ namespace Firm.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "ef8ac96c-b485-4129-87c2-eaed53767495",
+                            ConcurrencyStamp = "bb09ed29-9c6b-436a-9d3e-33abc583d5bf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "c2a11431-fba4-47c2-a683-d043e49bfd01",
+                            ConcurrencyStamp = "e12ffa95-cc57-4f9a-866d-8d14d1c84266",
                             Name = "Hotel",
                             NormalizedName = "HOTEL"
                         });
