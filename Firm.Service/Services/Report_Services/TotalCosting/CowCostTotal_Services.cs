@@ -22,7 +22,7 @@ namespace Firm.Service.Services.Report_Services.TotalCosting
             _dBContext = dBContext;
         }
 
-        public async Task<CowCostTotalModel> CowCost()
+        public async Task<CowCostTotalVM> CowCost()
         {
             //var vaccineCost= await  _dBContext.Vaccines.AsQueryable().AsNoTracking()
             //                 .Where(c=>c.IsActive==true).GroupBy(c=>c.CowId)
@@ -58,10 +58,10 @@ namespace Firm.Service.Services.Report_Services.TotalCosting
                                 }).ToListAsync();
 
 
-            var CowCostList = new List<CowCostTotalModel>();
+            var CowCostList = new List<CowCostTotalVM>();
             foreach (var cost in TotalCost)
             {
-                var CowCost = new CowCostTotalModel()
+                var CowCost = new CowCostTotalVM()
                 {
                     TagNo = cost.tagId,
                     VacCost= cost.vaccineCost,
@@ -77,7 +77,7 @@ namespace Firm.Service.Services.Report_Services.TotalCosting
 
                 CowCostList.Add(CowCost);
             }
-            var cowcost = new CowCostTotalModel();
+            var cowcost = new CowCostTotalVM();
             cowcost.CowCostList= CowCostList;
             cowcost.TotalVacCost = CowCostList.Sum(c => c.VacCost);
             cowcost.TotalTreatment = CowCostList.Sum(c => c.Treatment);

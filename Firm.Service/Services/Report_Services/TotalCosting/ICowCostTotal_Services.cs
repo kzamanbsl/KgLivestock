@@ -9,6 +9,6 @@ namespace Firm.Service.Services.Report_Services.TottalCosting
 {
     public  interface ICowCostTotal_Services
     {
-        Task<CowCostTotalModel> CowCost();
+        Task<CowCostTotalVM> CowCost();
     }
 }

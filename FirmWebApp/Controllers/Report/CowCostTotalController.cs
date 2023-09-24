@@ -15,14 +15,14 @@ namespace FirmWebApp.Controllers.Report
         }
         public async Task< IActionResult> Index()
         {
-            var model= new CowCostTotalModel();
+            var model= new CowCostTotalVM();
             model = await _dBContext.CowCost();
             return View(model);
         }
         
         public async Task< IActionResult> AllCostSummary()
         {
-            var model= new CowCostTotalModel();
+            var model= new CowCostTotalVM();
             model = await _dBContext.CowCost();
             return View(model);
         }
