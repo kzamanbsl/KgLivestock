@@ -14,5 +14,6 @@ namespace Firm.Service.Services.Cow_Services
         Task<CowServiceViewModel> UpdateCow(CowServiceViewModel model);
         Task<bool> Remove(long id);
         Task<CowServiceViewModel> GetCowHistoryById(long id);
+        Task<CowSummaryVM> CowSummary30Days();
     }
 }

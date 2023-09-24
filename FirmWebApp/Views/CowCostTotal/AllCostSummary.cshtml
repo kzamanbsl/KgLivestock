@@ -161,29 +161,29 @@
         </div>
     </div>
 
-      @section  Scripts{
-          <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @section  Scripts{
 
-    <script>
+        <script>
+            $(document).ready(function () {
 
-        $(document).ready(function () {
+                $('.print-link').hide();
 
-            $('.print-link').hide();
+                window.print();
+                $('.print-link').delay(2000).show();
+            });
 
-            window.print();
-            
-        });
+            function Print() {
 
-        function Print() {
+                $('.print-link').hide();
 
-            $('.print-link').hide();
+                window.print();
+                $('.print-link').delay(4000);
+                $('.print-link').show();
+            }
 
-            window.print();
-            $('.print-link').delay(4000);
-            $('.print-link').show();
-        }
-    </script>
-      }
+
+        </script>
+    }
 
 
 </body>

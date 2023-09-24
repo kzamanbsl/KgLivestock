@@ -159,7 +159,29 @@
 
 
 
+    @section  Scripts{
 
+        <script>
+            $(document).ready(function () {
+
+                $('.print-link').hide();
+
+                window.print();
+                $('.print-link').delay(2000).show();
+            });
+
+            function Print() {
+
+                $('.print-link').hide();
+
+                window.print();
+                $('.print-link').delay(4000);
+                $('.print-link').show();
+            }
+
+
+        </script>
+    }
 
 
 </body>

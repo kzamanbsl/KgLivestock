@@ -1,17 +1,17 @@
 ﻿@using static Firm.Utility.Miscellaneous.Enum
-@model List<CowServiceViewModel>
+@model CowSummaryVM
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-    int TotalCow = 0;
-    int TaotalOX = 0;
-    int TaotalHeifer = 0;
-    int TaotalCalf = 0;
+    //int TotalCow = 0;
+    //int TaotalOX = 0;
+    //int TaotalHeifer = 0;
+    //int TaotalCalf = 0;
 
-    TaotalOX = Model.Where(c => c.LivestockTypeVal == (LivestockType?)1).Count();
-    TotalCow = Model.Where(x => x.LivestockTypeVal == (LivestockType)2).Count();
-    TaotalHeifer = Model.Where(x => x.LivestockTypeVal == (LivestockType)3).Count();
-    TaotalCalf = Model.Where(x => x.LivestockTypeVal == (LivestockType)4).Count();
+    //TaotalOX = Model.Where(c => c.LivestockTypeVal == (LivestockType?)1).Count();
+    //TotalCow = Model.Where(x => x.LivestockTypeVal == (LivestockType)2).Count();
+    //TaotalHeifer = Model.Where(x => x.LivestockTypeVal == (LivestockType)3).Count();
+    //TaotalCalf = Model.Where(x => x.LivestockTypeVal == (LivestockType)4).Count();
 }
 <style>
     /* CSS for the container */
@@ -79,7 +79,7 @@
 
 
                     <div class="inner text-center">
-                        <h3>@TotalCow</h3>
+                        <h3>@Model.Totalcow</h3>
                         <p>Total Cow</p>
                     </div>
 
@@ -96,7 +96,7 @@
 
 
                     <div class="inner text-center">
-                        <h3>@TaotalOX</h3>
+                        <h3>@Model.TotalOX</h3>
                         <p>Total OX</p>
                     </div>
 
@@ -109,7 +109,7 @@
 
                 <div class="small-box ">
                     <div class="inner text-center">
-                        <h3>@TaotalHeifer</h3>
+                        <h3>@Model.TotalHeifer</h3>
                         <p>Total Heifer</p>
                     </div>
 
@@ -121,7 +121,7 @@
                 <div class="small-box ">
                     <div class="inner text-center">
 
-                        <h3>@TaotalCalf</h3>
+                        <h3>@Model.TotalCalf</h3>
                         <p>Total Calf</p>
 
                     </div>
@@ -136,7 +136,7 @@
                 <div class="small-box ">
                     <div class="inner text-center">
 
-                        <h3>@TaotalCalf</h3>
+                        <h3>@Model.YesterdayTotalMilk.ToString("F2")</h3>
                         <p>Yesterday Total Milk</p>
 
                     </div>
@@ -151,7 +151,7 @@
                 <div class="small-box ">
                     <div class="inner text-center">
 
-                        <h3>@TaotalCalf</h3>
+                        <h3>@Model.TotalMilkProduced.ToString("F2")</h3>
                         <p>Last 30 Days Milk</p>
 
                     </div>
@@ -166,7 +166,7 @@
                 <div class="small-box ">
                     <div class="inner text-center">
 
-                        <h3>@TaotalCalf</h3>
+                        <h3>@Model.TotalTreatmentCost.ToString("F2") /-</h3>
                         <p>30 Days Medical Expense</p>
 
                     </div>
@@ -181,7 +181,7 @@
                 <div class="small-box ">
                     <div class="inner text-center">
 
-                        <h3>@TaotalCalf</h3>
+                        <h3>@Model.TotalFeedingCost.ToString("F2") /-</h3>
                         <p>Last 30 Days Feed Expense</p>
 
                     </div>

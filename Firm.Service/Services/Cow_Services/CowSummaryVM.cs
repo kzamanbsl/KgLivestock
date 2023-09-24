@@ -20,7 +20,15 @@ namespace Firm.Service.Services.Cow_Services
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal TotalFeedingQuantity { get; set; } = 0;
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+
         public decimal TotalMilkProduced { get; set; } = 0;
+        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+
+        public decimal YesterdayTotalMilk { get; set; } = 0;
+        public int Totalcow { get; set; } = 0;
+        public int TotalOX { get; set; } = 0;
+        public int TotalCalf { get; set; } = 0;
+        public int TotalHeifer { get; set; } = 0;
 
     }
 }

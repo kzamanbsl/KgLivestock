@@ -154,28 +154,29 @@
 
 
 
-    <script type="text/javascript">
-        window.print();
-        $(document).ready(function () {
+    @section  Scripts{
 
-            $('.print-link').hide();
+        <script>
+            $(document).ready(function () {
 
-            window.print();
-            $('.print-link').delay(2000).show();
-        });
+                $('.print-link').hide();
 
-        function print() {
+                window.print();
+                $('.print-link').delay(2000).show();
+            });
 
-            $('.print-link').hide();
+            function Print() {
 
-            window.print();
-            $('.print-link').delay(4000);
- 
+                $('.print-link').hide();
 
-            $('.print-link').show();
-        }
-    </script>
+                window.print();
+                $('.print-link').delay(4000);
+                $('.print-link').show();
+            }
 
+
+        </script>
+    }
 
 </body>
 </html>

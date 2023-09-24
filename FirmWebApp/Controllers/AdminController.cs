@@ -15,7 +15,7 @@ namespace FirmWebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var obj = await _cowService.GetAll();
+            var obj = await _cowService.CowSummary30Days();
             return View(obj);
         }
     }

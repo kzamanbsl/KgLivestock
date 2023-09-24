@@ -309,5 +309,56 @@ namespace Firm.Service.Services.Cow_Services
             return model;
 
         }
+
+        public async Task<CowSummaryVM> CowSummary30Days()
+        {
+            var cowsData = await context.Cows.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
+                 .GroupBy(c => c.LivestockTypeVal).Select(c =>
+                 new
+                 {
+                     LivestockType = (LivestockType)c.Key,
+                     Count = c.Count()
+                 }).ToListAsync();
+
+            var today=DateTime.Now;
+            var yesterday=today.AddDays(-1);
+            var last30Days=today.AddDays(-30);
+            var yesterDayTotalMilk = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
+                          .Where(c => c.Date == yesterday).Select(c => c.TotalMilk).ToListAsync();
+            var last30DaysMilk= await context.MilkMonitors.AsNoTracking().Where(c => c.IsActive == true)
+                           .Where(c=>c.Date>= last30Days&&c.Date<=today).Select(c=>c.TotalMilk).ToListAsync();
+            last30DaysMilk.Sum();
+            var last30DaysTreatment= await context.Treatments.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
+               .Where(c => c.TreatmentDate >= last30Days && c.TreatmentDate <= today).Select(c => c.Price).ToListAsync();
+
+            var last30DaysVaccine = await context.Vaccines.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
+               .Where(c => c.VaccineDate >= last30Days && c.VaccineDate <= today).Select(c => c.Price).ToListAsync();
+
+            var last30DaysFeed = await context.FeedConsumptionCowWises.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
+               .Where(c => c.Date >= last30Days && c.Date <= today).Select(c => new { Quantity = c.Quantity, UnitPrice = c.UnitPrice }).ToListAsync();
+
+            var model = new CowSummaryVM();
+            try
+            {
+                foreach(var cow in cowsData)
+                {
+                    model.Totalcow = cow.LivestockType==(LivestockType)2?cow.Count: model.Totalcow;
+                    model.TotalOX = cow.LivestockType == (LivestockType)1 ? cow.Count : model.TotalOX;
+                    model.TotalCalf = cow.LivestockType == (LivestockType)4 ? cow.Count : model.TotalCalf;
+                    model.TotalHeifer = cow.LivestockType == (LivestockType)3 ? cow.Count : model.TotalHeifer;
+                }
+            }
+            catch
+            {
+
+            }
+
+            model.TotalMilkProduced = yesterDayTotalMilk.Sum();
+            model.TotalMilkProduced=last30DaysMilk.Sum();
+            model.TotalTreatmentCost = last30DaysTreatment.Sum() + last30DaysVaccine.Sum()??0;
+            model.TotalFeedingCost = last30DaysFeed.Sum(c=>c.Quantity*c.UnitPrice);
+
+            return model;
+        }
     }
 }
