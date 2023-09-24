@@ -8,14 +8,50 @@
     int TaotalHeifer = 0;
     int TaotalCalf = 0;
 
-    TaotalOX = Model.Where(c=>c.LivestockTypeVal == (LivestockType?)1).Count();
+    TaotalOX = Model.Where(c => c.LivestockTypeVal == (LivestockType?)1).Count();
     TotalCow = Model.Where(x => x.LivestockTypeVal == (LivestockType)2).Count();
     TaotalHeifer = Model.Where(x => x.LivestockTypeVal == (LivestockType)3).Count();
     TaotalCalf = Model.Where(x => x.LivestockTypeVal == (LivestockType)4).Count();
 }
+<style>
+    /* CSS for the container */
 
+
+    /* CSS for the small box */
+    .small-box {
+        background-image: url('~/kgfiles/cow.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: rgb(180, 200, 210); /* Background color with opacity */
+        color: #ffffff; /* Text color */
+        padding: 20px; /* Adjust padding as needed */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+        .small-box h3 {
+            font-size: 36px; /* Adjust font size as needed */
+        }
+
+        .small-box p {
+            font-size: 18px; /* Adjust font size as needed */
+        }
+
+    /* Center the small box within the container */
+    .small-box-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* 100% viewport height */
+    }
+
+    .img-responsive {
+        max-width: 100%;
+        height: 100%;
+    }
+</style>
 <div class="content-header">
-    <div class="container-fluid">
+    <div class="container-fluid ">
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1 class="m-0">Dashboard</h1>
@@ -29,48 +65,81 @@
         </div>
     </div>
 </div>
-<section class="content">
+<section>
+
+
     <div class="container-fluid ">
 
         <div class="row">
-            <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>@TotalCow</h3>
-                        <p>Total Cow</p>
+            @*<div class="col-lg-3 col-6">
+                <div class="card">
+                    <!-- Card Header (You can add a header if needed) -->
+                    <!-- <div class="card-header">
+                        Card Header
+                    </div> -->
+                    <!-- Card Body -->
+                    <div class="card-body text-center">
+                        <h3 class="card-title">@TotalCow</h3>
+                        <p2 class="card-text">Total Cow</p2>
+                        <img src="~/kgfiles/cow.png" alt="Cow Image" class="card-img-top img-responsive">
                     </div>
-                    <div class="icon ">
-                      @*  <i class="fa fa-cow"></i>*@
-                    </div>
-@*                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-*@                </div>
-            </div>
 
-            <div class="col-lg-3 col-6">
+                    <!-- Card Footer (Optional) -->
+                    <!-- <div class="card-footer">
+                        <a href="#" class="btn btn-primary">More info</a>
+                    </div> -->
+                </div>
+            </div>*@
+            <div class="col-lg-3 col-md-6 ">
 
-                <div class="small-box bg-success">
-                    <div class="inner justify-content-center">
-                        <h3>@TaotalOX</h3>
-                        <p>Total OX</p>
+                <div class="small-box ">
+                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="inner text-center">
+                                <h3>@TotalCow</h3>
+                                <p>Total Cow</p>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="icon">
+                                <img src="~/kgfiles/cow.png" alt="Cow Image" class="card-img-top img-responsive">
+                            </div>
+                        </div>
                     </div>
-                @*   <div class="icon">
-                  
-                    </div> *@
-                    @*
-                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>*@
+                    @*                    <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    *@
                 </div>
             </div>
 
             <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-warning">
-                    <div class="inner">
+                <div class="small-box ">
+                    <div class="row">
+                   <div class="col-sm-6">
+                            <div class="inner justify-content-center text-center">
+                                <h3>@TaotalOX</h3>
+                                <p>Total OX</p>
+                            </div>
+                   </div>
+                   <div class="col-sm-6">
+                       <img />
+                   </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+
+                <div class="small-box ">
+                    <div class="inner text-center">
                         <h3>@TaotalHeifer</h3>
                         <p>Total Heifer</p>
                     </div>
-                   @* <div class="icon">
-                        <i class="ion ion-person-add"></i>
+                    @* <div class="icon">
+                    <i class="ion ion-person-add"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>*@
                 </div>
@@ -78,15 +147,15 @@
 
             <div class="col-lg-3 col-6">
 
-                <div class="small-box bg-danger">
-                    <div class="inner">
+                <div class="small-box ">
+                    <div class="inner text-center">
 
                         <h3>@TaotalCalf</h3>
-                            <p>Total Calf</p>
-                      
+                        <p>Total Calf</p>
+
                     </div>
                     @*<div class="icon">
-                        <i class="ion ion-pie-graph"></i>
+                    <i class="ion ion-pie-graph"></i>
                     </div>
                     <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>*@
                 </div>

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Firm.Utility\Firm.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\MilkReport_Services\" />
+  </ItemGroup>
+
 </Project>

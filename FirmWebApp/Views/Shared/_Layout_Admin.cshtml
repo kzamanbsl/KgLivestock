@@ -19,7 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Firm</title>
 
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link href="~/AdminLib/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
@@ -32,10 +31,11 @@
     <link href="~/css/adminCustomt.css" rel="stylesheet" />
     <link href="~/AdminLib/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/AdminLib/Dropify/css/dropify.min.css" rel="stylesheet" />
-  
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
     <script src="https://kit.fontawesome.com/4fb09bb935.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-
+    @RenderSectionAsync("style",required:false)
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed text-sm">
@@ -93,7 +93,11 @@
     </div>
     <script src="~/AdminLib/jquery/dist/jquery.min.js"></script>
     <script src="~/AdminLib/jquery-ui/jquery-ui.min.js"></script>
+
     <script src="~/AdminLib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script src="~/AdminLib/sparklines/sparkline.js"></script>
     <script src="~/AdminLib/moment/moment.min.js"></script>
     <script src="~/AdminLib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>

@@ -18,6 +18,7 @@ namespace Firm.Service.Services.Milk_Services
         public string ShiftName { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal TotalMilk { get; set; }
+
         public string Remarks { get; set; }
         public string ErrorMessage { get; set; }
         public bool IsActive { get;  set; }

@@ -42,18 +42,15 @@
         background-color: white;
         font-size: 12pt;
     }
-    
 
-    /*tr:last-child > td[colspan] {
-        border: none;
-    }*/
-   
+
+
+
     .print-link {
         text-align: right;
     }
 
     .print-tr {
-
     }
 
     .company-info {
@@ -76,100 +73,71 @@
             font-size: 14px;
             line-height: 1.4;
         }
-   
-    
+
+
 
     @@media print {
         body {
-            padding-left:0px;
+            padding-left: 0px;
             background-color: white;
             font-size: 12pt;
         }
+
         .print-link {
             display: none;
         }
 
         .print-tr {
-            border: 1px solid black!important;
-            color:black!important;
+            border: 1px solid black !important;
+            color: black !important;
         }
-
-        
-
     }
-
-/*
-    li {
-        list-style: none;
-        font-weight: 600;
-    }
-
-    h4 {
-        margin-bottom: 3px;
-        font-weight: 900;
-        font-size: 25px;
-    }
-
-    ul {
-        margin: 0;
-        padding: 0;
-    }
-
-    p {
-        margin: 0;
-        padding: 0;
-    }
-*/
-  
-   
-
-
 </style>
 <body>
     <div class="print-link">
         <a href="javascript:window.print()">Click to Print</a>
     </div>
     @*<div class="container row ">
-        <div class="company-info ">
-            <div class="company-logo">
-                <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
-            </div>
-            <div class="company-details">
-                <p><strong>Company Name:</strong> TCL AGRO DAIRY FIRM</p>
-                <p><strong>Address:</strong> Dhaka, Bangladesh</p>
-                <p><strong>Phone:</strong> 01700000000</p>
-                <p><strong>Print Date:</strong> @DateTime.Now</p>
-            </div>
-        </div>
+    <div class="company-info ">
+    <div class="company-logo">
+    <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
+    </div>
+    <div class="company-details">
+    <p><strong>Company Name:</strong> TCL AGRO DAIRY FIRM</p>
+    <p><strong>Address:</strong> Dhaka, Bangladesh</p>
+    <p><strong>Phone:</strong> 01700000000</p>
+    <p><strong>Print Date:</strong> @DateTime.Now</p>
+    </div>
+    </div>
     </div>*@
 
 
     <div class="wrapper print-margin">
         <!-- Main content -->
-       
-   
+
+
         <div class="container">
-         
+
             <table class="table table-sm table-striped">
-              
+
                 <tbody>
-                    <tr >
-                        <td  colspan="8"class="print-tr bg-warning text-center text-bold"> Summary </td>
+                    <tr>
+                        <td colspan="8" class="print-tr bg-warning text-center text-bold"> Summary </td>
                     </tr>
-                    <tr >
+                    <tr>
                         <th>Tag and Type</th>
                         <th>Breed</th>
                         <th class="text-center">Buying Price</th>
                         <th class="text-center">Treatment Cost</th>
                         <th class="text-center">Vaccine Cost</th>
                         <th class="text-center">Feeding Cost</th>
-                        <th class ="text-center">Total Cost</th>
+                        <th class="text-center">Total Cost</th>
                         <th class="text-center">Milk Produced</th>
                     </tr>
-                    <tr >
+                    <tr>
                         <th colspan="2"></th>
-                       @* <th></th>*@
-                        <th class ="text-center">(A)</th>
+                        @* <th></th>*@
+                        <th class="text-center">(A)</th>
                         <th class="text-center">(B)</th>
                         <th class="text-center">(C)</th>
                         <th class="text-center">(D)</th>
@@ -185,16 +153,16 @@
                         <td class="text-right">@Model.cowSummaryVM.TotalVaccineCost</td>
                         <td class="text-right">@Model.cowSummaryVM.TotalFeedingCost.ToString("0.00")</td>
                         <td class="text-right">@(Model.cowSummaryVM.TotalExpense.HasValue ? Model.cowSummaryVM.TotalExpense.Value.ToString("0.00") : 0) </td>
-                        <td class="text-success text-right" >@Model.cowSummaryVM.TotalMilkProduced <span>litre</span></td>
+                        <td class="text-success text-right">@Model.cowSummaryVM.TotalMilkProduced <span>litre</span></td>
                     </tr>
                 </tbody>
             </table>
             <div class="row">
                 <div class="col-sm-6">
                     <table class="table table-sm  table-striped">
-                       
+
                         <tbody>
-                            <tr >
+                            <tr>
                                 <td colspan="1" class="print-tr bg-olive text-center text-bold">Milk</td>
                             </tr>
                             <tr class="">
@@ -226,7 +194,7 @@
                         </tbody>
                     </table>
                 </div>
-               
+
             </div>
             <div class="row">
                 <div class="col-sm-6">
@@ -287,16 +255,16 @@
                 </div>
             </div>
         </div>
- </div>
+    </div>
 
-       @* <script>
-            window.addEventListener("load", window.print());
-        </script>*@
-
-
+    @* <script>
+    window.addEventListener("load", window.print());
+    </script>*@
 
 
-   
+
+
+
 </body>
 </html>
 
