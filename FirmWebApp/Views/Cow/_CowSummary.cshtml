@@ -38,9 +38,9 @@
     }
 
     body {
-        padding: 30px;
-        background-color: white;
-        font-size: 12pt;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
     .container {
@@ -48,12 +48,34 @@
         margin: 50px auto;
     }
 
-
-    .print-link {
-        text-align: right;
+    table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
-    .print-tr {
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tfoot {
+        font-weight: bold;
+    }
+
+    #print-button {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    @@media print {
+        #print-button {
+            display: none;
+        }
     }
 
     .company-info {
@@ -78,23 +100,8 @@
             line-height: 1.4;
         }
 
-
-
-    @@media print {
-        body {
-            padding-left: 0px;
-            background-color: white;
-            font-size: 12pt;
-        }
-
-        .print-link {
-            display: none;
-        }
-
-        .print-tr {
-            border: 1px solid black !important;
-            color: black !important;
-        }
+    .print-link {
+        float: right;
     }
 </style>
 <body>
@@ -102,7 +109,8 @@
         <a href="javascript:window.print()"><i class="fa fa-print"></i> Print</a>
     </div>
     <div class="container row">
-        <div class="company-info ">
+        <div class="col-4"> </div>
+        <div class="company-info col-4 ">
             <div class="company-logo">
                 <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
             </div>
@@ -113,6 +121,9 @@
                 <p><strong>Print Date:</strong> @DateTime.Now</p>
             </div>
         </div>
+        <div class="col-4"> </div>
+
+       
     </div>
 
 
