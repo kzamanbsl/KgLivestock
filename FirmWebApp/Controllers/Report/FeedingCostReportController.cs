@@ -15,7 +15,7 @@ namespace FirmWebApp.Controllers.Report
         public async Task< IActionResult> Index()
         {
             var feedModel = new FeddingCostReportVM();
-            feedModel.StartDate= DateTime.Now.AddMonths(-2);
+            feedModel.StartDate= DateTime.Now.AddDays(-15);
             feedModel.EndDate= DateTime.Now;
             feedModel =  await _reportService.FeddingCostReport(feedModel);
             feedModel.StartDate = DateTime.Now.AddMonths(-2);
