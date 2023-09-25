@@ -135,7 +135,7 @@
                                 <td>@cow.VacCost.ToString("F2")</td>
                                 <td>@cow.Treatment.Value.ToString("F2")</td>
                                 <td>@cow.FeedCost.ToString("F2")</td>
-                                <td>@cow.BuyCost.Value.ToString("F2")</td>
+                                <td>@cow.BuyCost</td>
                                 <td>@cow.perCowCosting.Value.ToString("F2")</td>
                             </tr>
                         }
@@ -152,7 +152,7 @@
                             <td>Total Vacccine Cost: @Model.TotalVacCost.ToString("F2")</td>
                             <td>Total Treatment Cost:@Model.TotalTreatment.Value.ToString("F2")</td>
                             <td>Total Feed Cost:@Model.TotalFeedCost.ToString("F2")</td>
-                            <td>Total Buy Cost:@Model.CowBuying.Value.ToString("F2")</td>
+                            <td>Total Buy Cost:@Model.CowBuying</td>
                             <td>Total Cost: @Model.TotalCowCost.Value.ToString("F2")</td>
                         </tr>
                     }
