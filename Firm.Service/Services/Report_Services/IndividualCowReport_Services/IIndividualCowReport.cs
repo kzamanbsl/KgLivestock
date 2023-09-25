@@ -8,5 +8,6 @@ namespace Firm.Service.Services.Report_Services.IndividualCowReport_Services
 {
     public  interface IIndividualCowReport
     {
+        Task<IndividualCowReportVM> IndividualCowSummary(IndividualCowReportVM individualCow);
     }
 }

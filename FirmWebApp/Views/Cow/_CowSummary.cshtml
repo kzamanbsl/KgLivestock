@@ -43,7 +43,10 @@
         font-size: 12pt;
     }
 
-
+    .container {
+        max-width: 75%;
+        margin: 50px auto;
+    }
 
 
     .print-link {
@@ -55,8 +58,9 @@
 
     .company-info {
         display: flex;
+        justify-content: center;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 3px;
     }
 
     .company-logo img {
@@ -95,21 +99,21 @@
 </style>
 <body>
     <div class="print-link">
-        <a href="javascript:window.print()">Click to Print</a>
+        <a href="javascript:window.print()"><i class="fa fa-print"></i> Print</a>
     </div>
-    @*<div class="container row ">
-    <div class="company-info ">
-    <div class="company-logo">
-    <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
+    <div class="container row">
+        <div class="company-info ">
+            <div class="company-logo">
+                <img src="~/kgfiles/firmlogo.png" alt="Company Logo">
+            </div>
+            <div class="company-details">
+                <p1><strong>TCL AGRO DAIRY FIRM</strong></p1>
+                <p><strong> Dhaka, Bangladesh</strong></p>
+                <p><strong>Phone:</strong> 01700000000</p>
+                <p><strong>Print Date:</strong> @DateTime.Now</p>
+            </div>
+        </div>
     </div>
-    <div class="company-details">
-    <p><strong>Company Name:</strong> TCL AGRO DAIRY FIRM</p>
-    <p><strong>Address:</strong> Dhaka, Bangladesh</p>
-    <p><strong>Phone:</strong> 01700000000</p>
-    <p><strong>Print Date:</strong> @DateTime.Now</p>
-    </div>
-    </div>
-    </div>*@
 
 
     <div class="wrapper print-margin">

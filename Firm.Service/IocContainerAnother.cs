@@ -10,6 +10,7 @@ using Firm.Service.Services.FeedCurrentStock_Services;
 using Firm.Service.Services.FeedEntry_Services;
 using Firm.Service.Services.Milk_Services;
 using Firm.Service.Services.Report_Services;
+using Firm.Service.Services.Report_Services.IndividualCowReport_Services;
 using Firm.Service.Services.Report_Services.MilkReport_Services;
 using Firm.Service.Services.Report_Services.TotalCosting;
 using Firm.Service.Services.Report_Services.TottalCosting;
@@ -43,6 +44,7 @@ namespace Firm.Infrastructure
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<IMilkReportServices, MilkReportServices>();
             services.AddScoped<ICowCostTotal_Services, CowCostTotal_Services>();
+            services.AddScoped<IIndividualCowReport, IndividualCowReport>();
             services.AddHttpContextAccessor();
             return services;
         }
