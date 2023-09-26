@@ -24,7 +24,7 @@
                 <h5 class="card-title">Feed Consumption (Bulk)</h5>
             </div>
 
-            <div class="card-body">
+            <div class="card-body w-75 mx-auto">
                 <form asp-action="Create" asp-controller="FeedConsumptionBulk" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
@@ -34,13 +34,13 @@
                         </div>
                     }
                     <div class="row mx-2">
-                        <div class="col-md-4 col-sm-12 col-lg-4">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="Date" class="control-label"> Date</label>
-                                <input asp-for="Date" type="date" class="form-control">
+                                <input asp-for="Date" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control">
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-12 col-lg-4">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="FeedCategoryId" class="control-label">Feed Category</label>
                                 <select asp-for="FeedCategoryId" class="form-control" asp-items="ViewBag.feedCategoryList">
@@ -48,23 +48,38 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4 col-sm-12 col-lg-4">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="ShadeNo" class="control-label">Shade Number</label>
+                                <input asp-for="ShadeNo" class="form-control" placeholder="Shade No.">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="LineNo" class="control-label">Line Number</label>
+                                <input asp-for="LineNo" class="form-control" placeholder="Line No.">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="Quantity" class="control-label">Consumtion Quantity</label>
                                 <input asp-for="Quantity" class="form-control" placeholder="Quantity">
                             </div>
                         </div>
                     </div>
-                    <div class="row mx-2">
-                        <div class="form-group col-sm-12">
+                    <div class="row mx-2 float-right">
+                        <div class="form-group col-sm-4">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
+            
 
-
-                </form>
-            </div>
+            </form>
         </div>
+    </div>
     </div>
 </section>
 
@@ -95,7 +110,7 @@
                     }
                 });
             });
-       
+
         });
 
     </script>
@@ -106,7 +121,7 @@
             });
         }, 4000);
     </script>
-    
+
   }
 
 

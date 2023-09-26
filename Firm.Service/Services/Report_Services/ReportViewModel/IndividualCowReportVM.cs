@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Firm.Service.Services.Report_Services.IndividualCowReport_Services
+namespace Firm.Service.Services.Report_Services.ReportViewModel
 {
-    public  class IndividualCowReportVM
+    public class IndividualCowReportVM
     {
         public int TagId { get; set; }
         public decimal Weight { get; set; }

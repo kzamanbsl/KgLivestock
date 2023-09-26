@@ -28,6 +28,13 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
             //}
             try
             {
+                if((model.LineNo | model.ShadeNo)<1)
+                {
+                    return model;
+                }
+
+              
+
                 var feedCurrentStock = await context.FeedCurrentStocks.FirstOrDefaultAsync(c => c.FeedCategoryId == model.FeedCategoryId);
                 if (feedCurrentStock != null )
                 {

@@ -29,9 +29,11 @@
                     <tr>
                         <th>#</th>
                         <th>Date</th>
-                        <th>Cow Tag</th>
-                        <th>Milk Collection (Litre)</th>
-                        <th>Shift</th>
+                        <th>Tag No.</th>
+                        <th>Day Shift (Litre)</th>
+                        <th>Mourning Shift (Litre)</th>
+                        <th>Evening Shift (Litre)</th>  
+                        <th>Total Milk (Litre)</th>
                         <th>Action</th>
                         <th>Details</th>
                     </tr>
@@ -47,8 +49,11 @@
                             <td>@SN</td>
                             <td>@treatment.Date.ToShortDateString()</td>
                             <td>@treatment.CowTagId</td>
-                            <td>@treatment.TotalMilk</td>
-                            <td>@treatment.ShiftName</td>
+                            <td style="width:100px">@treatment.DayShift</td>
+                            <td style="width:120px">@treatment.MourningShift</td>
+                            <td style="width:100px">@treatment.EveningShift</td>
+                            <td style="width:100px">@treatment.TotalMilk</td>
+                           
                             <td>
                                <a href="@Url.Action("Edit", new { id = treatment.Id })">Edit</a>
                                <span> | </span>

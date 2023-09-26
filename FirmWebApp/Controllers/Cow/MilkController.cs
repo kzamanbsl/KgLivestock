@@ -61,7 +61,7 @@ namespace FirmWebApp.Controllers.Cow
         {
             try
             {
-                var result = await milkService.UpdateMilk(model);
+                 await milkService.UpdateMilk(model);
 
                 //if (!string.IsNullOrEmpty(result.ErrorMessage))
                 //{

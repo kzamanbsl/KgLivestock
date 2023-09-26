@@ -37,7 +37,7 @@
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="Date" class="control-label"> Date </label>
-                                <input asp-for="Date" type="date" class="form-control" >
+                                <input asp-for="Date" type="date" class="form-control">
                             </div>
                         </div>
 
@@ -51,21 +51,32 @@
                         </div>
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
-                                <label asp-for="ShiftVal" class="control-label">Shift</label>
-                                <select asp-for="ShiftVal" asp-items="Html.GetEnumSelectList<Shift>()" class="form-control"></select>
+                                <label asp-for="DayShift" class="control-label">Day Shift</label>
+                                <input asp-for="DayShift" type="number" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="MourningShift" class="control-label">Mourning Shift</label>
+                                <input asp-for="MourningShift" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="EveningShift" class="control-label">Evening Shift</label>
+                                <input asp-for="EveningShift" class="form-control" />
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="TotalMilk" class="control-label"> Milk Collection (Litre) </label>
-                                <input asp-for="TotalMilk" required class="form-control" placeholder="Collected Milk in litre">
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-lg-12">
-                            <div class="form-group">
-                                <label asp-for="Remarks" class="control-label"> Remarks </label>
-                                <textarea asp-for="Remarks" class="form-control" placeholder="Enter Remarks" maxlength="100"></textarea>
 
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                                <div class="form-group">
+                                    <label asp-for="Remarks" class="control-label"> Remarks </label>
+                                    <textarea asp-for="Remarks" class="form-control" placeholder="Enter Remarks" maxlength="100"></textarea>
+
+                                </div>
                             </div>
                         </div>
                     </div>

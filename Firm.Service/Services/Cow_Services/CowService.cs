@@ -43,6 +43,7 @@ namespace Firm.Service.Services.Cow_Services
                 cow.CowTeeth = model.CowTeeth;
                 cow.Color = model.Color;
                 cow.ShedNo = model.ShedNo;
+                cow.LineNo = model.LineNo;
                 cow.LivestockTypeVal = model.LivestockTypeVal;
                 context.Cows.Add(cow);
                 var res = await context.SaveChangesAsync();
@@ -84,6 +85,8 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
+
                 model.LivestockTypeVal = cow.LivestockTypeVal;
 
                
@@ -121,6 +124,7 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
                 model.LivestockTypeVal = cow.LivestockTypeVal;
                 model.BreedId = cow.BreedId;
                 //model.BreedName = cow.BreedId == 0 ? "" : context.Breeds.FirstOrDefault(a => a.Id == cow.BreedId).BreedName;
@@ -172,6 +176,7 @@ namespace Firm.Service.Services.Cow_Services
                     cow.CowTeeth = model.CowTeeth;
                     cow.Color = model.Color;
                     cow.ShedNo = model.ShedNo;
+                    cow.LineNo = model.LineNo;
                     cow.LivestockTypeVal = model.LivestockTypeVal;
                     context.Entry(cow).State = EntityState.Modified;
                     await context.SaveChangesAsync();
@@ -216,6 +221,7 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
                 model.LivestockTypeVal = cow.LivestockTypeVal;
                 model.BreedId = cow.BreedId;
                 model.BreedName = cow.BreedId == 0 ? "" : context.Breeds.FirstOrDefault(a => a.Id == cow.BreedId).BreedName;

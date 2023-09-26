@@ -28,7 +28,7 @@
     <div class="container  w-75">
         <div class="mt-5 mb-2">
             <h2> Milk Report</h2>
-            <form asp-controller="MilkReport" asp-action="Index" method="post">
+            <form asp-controller="Report" asp-action="MilkReport" method="post">
 
 
 
@@ -53,7 +53,7 @@
 
                     @if (Model != null)
                     {
-                        <button formtarget="_blank" formaction="/MilkReport/MilkReport" class="btn btn-secondary  form-control">Print</button>
+                        <button formtarget="_blank" formaction="/Report/MilkReportPrint" class="btn btn-secondary  form-control">Print</button>
 
                     }
 

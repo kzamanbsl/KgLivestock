@@ -30,7 +30,7 @@
                     <tr>
                         <th>#</th>
                         <th>Purchase Date</th>
-                        <th>Tag</th>
+                        <th>Tag No.</th>
                         <th>Breed</th>
                         <th>Price</th>
                         <th>Shed</th>
@@ -84,7 +84,7 @@
                                                 <div class="row mx-2">
 
 
-                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
                                                             <label asp-for="@cow.PurchaseDate" class="control-label">Purchase Date (কেনার তারিখ)</label>
                                                             <input asp-for="@cow.PurchaseDate" class="form-control" placeholder="Enter purchase date" readonly>
@@ -92,7 +92,7 @@
                                                     </div>
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
-                                                            <label asp-for="@cow.Origin" class="control-label">Purchased From (কোথা থেকে কেনা)</label>
+                                                            <label asp-for="@cow.Origin" class="control-label">Purchased From(ক্রয় স্থান)</label>
                                                             <input asp-for="@cow.Origin" class="form-control" id="origin" placeholder="Enter Source" readonly>
                                                         </div>
                                                     </div>
@@ -145,6 +145,12 @@
                                                             <label asp-for="@cow.ShedNo" class="control-label">Shed No. (চালার নম্বর)</label>
                                                             <input asp-for="@cow.ShedNo" class="form-control" id="cow-weight" readonly placeholder="No of Shed">
                                                         </div>
+                                                    </div>   
+                                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label asp-for="@cow.LineNo" class="control-label">Row No. (সারি নম্বর)</label>
+                                                            <input asp-for="@cow.LineNo" class="form-control" id="cow-weight" readonly placeholder="No of Row">
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
@@ -156,7 +162,7 @@
 
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
-                                                            <label asp-for="@cow.TagId" class="control-label">Tag (ট্যাগ)</label>
+                                                            <label asp-for="@cow.TagId" class="control-label">Tag No.(ট্যাগ)</label>
                                                             <input asp-for="@cow.TagId" class="form-control" placeholder="Enter Tag" readonly>
                                                         </div>
                                                     </div>

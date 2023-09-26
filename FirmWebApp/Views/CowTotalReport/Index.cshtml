@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 
 }
-@model FeddingCostReportVM
+@model CowCostTotalVM
 
 @section style{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
@@ -16,7 +16,12 @@
         #example tfoot td {
             text-align: center;
         }
+        
 
+
+
+            text-align: right;
+        }
         #PrintButton {
             float: right;
         }
@@ -27,8 +32,8 @@
 <section>
     <div class="container  w-75">
         <div class="mt-5 mb-2">
-            <h3> Feed Report</h3>
-            <form asp-controller="FeedingCostReport" asp-action="Index" method="post">
+            <h3> Cow Total Cost Report </h3>
+            @*<form asp-controller="Vaccine_Treatment_Report" asp-action="Index" method="post">
 
 
 
@@ -39,7 +44,7 @@
                     </div>
                     <div class="col-md-5">
                         <label for="endDate">End Date:</label>
-                        <input asp-for="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" type="date" class="form-control" id="endDate">
+                        <input asp-for="EndDate" type="date" value="@Model.EndDate.ToString("yyyy-MM-dd")" class="form-control" id="endDate">
                     </div>
                     <div class="col-md-2 mt-4">
                         <button class="btn btn-primary d-block form-control mt-1" id="showButton">Show</button>
@@ -47,12 +52,12 @@
 
                 </div>
 
-
+            </form>*@
                 <div class="col-sm-2 mt-1 mb-2 p-3" id="PrintButton">
 
                     @if (Model != null)
                     {
-                        <button formtarget="_blank" formaction="/FeedingCostReport/FeddingCostSummary" class="btn btn-secondary  form-control">Print</button>
+                    <a target="_blank" href="/Report/CowTotalSummary" class="btn btn-secondary  form-control">Print</a>
 
                     }
 
@@ -61,31 +66,34 @@
 
 
 
-            </form>
+            
         </div>
-        <table id="example" class="display w-100 text-center table border mt-3" cellspacing="0">
+        <table id="example" class="display w-100 text-center table border mt-3 float-right" cellspacing="0">
             <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Tag Number</th>
-                    <th>Feeding Quantity</th>
-                    <th>Consumption For</th>
-                    
+                <tr >
+                   
+                    <th>Tag ID</th>
+                    <th>Vaccine Cost</th>
+                    <th>Treatment Cost</th>
+                    <th>Feed Cost</th>
+                    <th>Buying Cost</th> 
+                    <th>Total Cost</th>
+
                 </tr>
             </thead>
             <tbody>
                 @if (Model != null)
                 {
 
-                    @foreach (var cow in Model.FeddingCostList)
+                    @foreach (var cow in Model.CowCostList)
                     {
                         <tr>
-                            <td>@cow.Day</td>
                             <td>@cow.TagNo</td>
-                            <td>@cow.FoodUnit</td>
-
-                            <td>@cow.Consumption.ToString("F2")</td>
-
+                            <td>@cow.VacCost.ToString("F2")</td>
+                            <td>@cow.Treatment.Value.ToString("F2")</td>
+                            <td>@cow.FeedCost.ToString("F2")</td>
+                            <td>@cow.BuyCost</td>
+                            <td>@cow.perCowCosting.Value.ToString("F2")</td>
 
                         </tr>
                     }
@@ -96,10 +104,12 @@
                 @if (Model != null)
                 {
                     <tr>
-                        <td> Total Day: @Model.TottalDay</td>
-                        <td>Total Cow: @Model.TottalCow</td>
-                        <td>Total Quantity: @Model.TottalFoodUnit.ToString("F2")</td>
-                        <td>Total Cost: @Model.TottalConsumption.ToString("F2")</td>
+                        <td>Total Cow: @Model.Cow</td>
+                        <td>Total Vacccine Cost: @Model.TotalVacCost.ToString("F2")</td>
+                        <td>Total Treatment Cost:@Model.TotalTreatment.Value.ToString("F2")</td>
+                        <td>Total Feed Cost:@Model.TotalFeedCost.ToString("F2")</td>
+                        <td>Total Buy Cost:@Model.CowBuying</td>
+                        <td>Total Cost: @Model.TotalCowCost.Value.ToString("F2")</td>
                     </tr>
                 }
             </tfoot>
@@ -115,11 +125,10 @@
 
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
-        $('#FeedReport').addClass('active');
+        $('#cowTotalCost').addClass('active');
         var table = $('#example').DataTable();
 
     });
 </script>
-
 
 

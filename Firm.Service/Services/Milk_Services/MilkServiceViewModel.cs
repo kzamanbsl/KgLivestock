@@ -16,6 +16,10 @@ namespace Firm.Service.Services.Milk_Services
         public string CowTagId { get; set; }
         public Shift ShiftVal { get; set; }
         public string ShiftName { get; set; }
+        public decimal? DayShift { get; set; }
+
+        public decimal? EveningShift { get; set; }
+        public decimal? MourningShift { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal TotalMilk { get; set; }
 
