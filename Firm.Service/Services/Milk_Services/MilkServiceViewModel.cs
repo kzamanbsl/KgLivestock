@@ -14,15 +14,18 @@ namespace Firm.Service.Services.Milk_Services
         public DateTime Date { get; set; } = DateTime.Now;
         public long CowId { get; set; } = 0;
         public string CowTagId { get; set; }
-        public Shift ShiftVal { get; set; }
+        public Shift ShiftVal { get; set; } = (Shift)0;
+        public string ShadeNo { get; set; }
+        public string LineNo { get; set; }
         public string ShiftName { get; set; }
         public decimal? DayShift { get; set; }
 
         public decimal? EveningShift { get; set; }
         public decimal? MourningShift { get; set; }
+
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         public decimal TotalMilk { get; set; }
-
+        public List<MilkServiceViewModel>? milkServiceVmList { get; set; }
         public string Remarks { get; set; }
         public string ErrorMessage { get; set; }
         public bool IsActive { get;  set; }

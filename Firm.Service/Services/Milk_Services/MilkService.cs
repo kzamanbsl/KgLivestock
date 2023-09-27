@@ -214,6 +214,42 @@ namespace Firm.Service.Services.Milk_Services
             }
           
         }
+
+        public async  Task<List<MilkServiceViewModel>> MilkingCowList(MilkServiceViewModel model)
+        {
+            if(model is null)
+            {
+                
+            }
+            var cowList=await context.Cows.AsQueryable().AsNoTracking()
+             
+                .Where(c=> c.IsActive==true && c.LivestockTypeVal == (LivestockType)2
+                &&c.ShedNo.Equals(model.ShadeNo))
+                  
+                .Select(c=> new {cowId=c.Id,tagId=c.TagId}).OrderBy(c=>c.tagId).ToListAsync();
+
+
+            var listVM = new List<MilkServiceViewModel>();
+            foreach(var cow in cowList)
+            {
+                var modelObject = new MilkServiceViewModel()
+                {
+                    CowId = cow.cowId,
+                    CowTagId = cow.tagId
+
+                };
+
+
+
+                listVM.Add(modelObject);
+
+            }
+            return listVM;
+        }
+
+
+
+
         //    public async Task<MilkServiceViewModel> GetById(long id)
         //    {
         //        var milk = await context.MilkMonitors.FindAsync(id);

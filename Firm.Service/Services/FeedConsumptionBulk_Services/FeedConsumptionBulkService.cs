@@ -28,17 +28,42 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
             //}
             try
             {
-                if((model.LineNo | model.ShadeNo)<1)
-                {
-                    return model;
-                }
+                
 
               
 
                 var feedCurrentStock = await context.FeedCurrentStocks.FirstOrDefaultAsync(c => c.FeedCategoryId == model.FeedCategoryId);
                 if (feedCurrentStock != null )
                 {
-                    if(feedCurrentStock.CurrentQuantity < model.Quantity)
+
+                    if ((model.LineNo | model.ShadeNo) < 1)
+                    {
+                        model.ErrorMessage = "Wrong Input Shade and Line Number";
+                        return model;
+                    }
+                    else
+                    {
+                        var checkShadeLine = await context.Cows.AsQueryable().AsNoTracking()
+                                           .AnyAsync(c=>c.ShedNo.Equals(model.ShadeNo.ToString())
+                                          && c.LineNo.Equals(model.LineNo.ToString()));
+
+                        if(!checkShadeLine )
+                        {
+                           model.ErrorMessage="Invalid Shade and Line Number";
+                            return model;
+                        }
+                    }
+
+
+
+
+
+
+
+
+
+
+                    if (feedCurrentStock.CurrentQuantity < model.Quantity)
                     {
                         model.ErrorMessage = "Invalid Quantity, amount unavailable in store";
                     }
@@ -64,37 +89,44 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
                             await context.SaveChangesAsync();
 
                             //cow wise consumption
-                            var liveStocksAdults = await context.Cows.Where(l => l.IsActive == true && (l.LivestockTypeVal == (LivestockType)1 || l.LivestockTypeVal == (LivestockType)2)).ToListAsync();
-                            var liveStocksChilds = await context.Cows.Where(l => l.IsActive == true && (l.LivestockTypeVal == (LivestockType)3 || l.LivestockTypeVal == (LivestockType)4)).ToListAsync();
-                            decimal totalLiveStocks = (liveStocksAdults.Count() * 2) + liveStocksChilds.Count();
-                            decimal UnitPerLiveStock = feedConsumptionBulk.Quantity / totalLiveStocks;
-                            foreach (var liveStock in liveStocksAdults)
-                            {
-                                FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
-                                feedConsumptionCowWise.Date = feedConsumptionBulk.Date;
-                                feedConsumptionCowWise.CowId = liveStock.Id;
-                                feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
-                                feedConsumptionCowWise.Quantity = UnitPerLiveStock * 2;
-                                feedConsumptionCowWise.UnitPrice = feedConsumptionBulk.UnitPrice;
-                                feedConsumptionCowWise.CreatedOn = feedConsumptionBulk.CreatedOn;
-                                feedConsumptionCowWise.IsActive = true;
-                                context.FeedConsumptionCowWises.Add(feedConsumptionCowWise);
-                                var res2 = await context.SaveChangesAsync();
-                            }
-                            foreach (var liveStock in liveStocksChilds)
-                            {
-                                FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
-                                feedConsumptionCowWise.Date = feedConsumptionBulk.Date;
-                                feedConsumptionCowWise.CowId = liveStock.Id;
-                                feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
-                                feedConsumptionCowWise.Quantity = UnitPerLiveStock;
-                                feedConsumptionCowWise.UnitPrice = feedConsumptionBulk.UnitPrice;
-                                feedConsumptionCowWise.CreatedOn = feedConsumptionBulk.CreatedOn;
-                                feedConsumptionCowWise.IsActive = true;
-                                context.FeedConsumptionCowWises.Add(feedConsumptionCowWise);
-                                var res2 = await context.SaveChangesAsync();
-                            }
 
+                            //old Logic for cow wise consumption
+                            //var liveStocksAdults = await context.Cows.Where(l => l.IsActive == true && (l.LivestockTypeVal == (LivestockType)1 || l.LivestockTypeVal == (LivestockType)2)).ToListAsync();
+                            //var liveStocksChilds = await context.Cows.Where(l => l.IsActive == true && (l.LivestockTypeVal == (LivestockType)3 || l.LivestockTypeVal == (LivestockType)4)).ToListAsync();
+                            //decimal totalLiveStocks = (liveStocksAdults.Count() * 2) + liveStocksChilds.Count();
+
+
+                            //new Logic cow wise consumption
+
+                            var cowList= await context.Cows.AsQueryable().AsNoTracking().Where(c=>c.ShedNo.Equals(model.ShadeNo.ToString())
+                                                                    && c.LineNo.Equals(model.LineNo.ToString())).ToListAsync();
+
+                            decimal UnitPerLiveStock = model.Quantity / cowList.Count();
+
+
+                            List<FeedConsumptionCowWise> CowWiseList = new List<FeedConsumptionCowWise>();
+                            foreach (var liveStock in cowList)
+                            {
+                                FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
+                                feedConsumptionCowWise.Date = feedConsumptionBulk.Date;
+                                feedConsumptionCowWise.CowId = liveStock.Id;
+                                feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
+                                feedConsumptionCowWise.Quantity = UnitPerLiveStock ;
+                                feedConsumptionCowWise.UnitPrice = feedConsumptionBulk.UnitPrice;
+                                feedConsumptionCowWise.CreatedOn = feedConsumptionBulk.CreatedOn;
+                                feedConsumptionCowWise.IsActive = true;
+                                CowWiseList.Add(feedConsumptionCowWise);
+                            }
+                            try
+                            {
+                                await context.AddRangeAsync(CowWiseList);
+                                await context.SaveChangesAsync();
+                            }
+                            catch(Exception ex)
+                            {
+                                model.ErrorMessage = "Error  "+ex.Message;
+                                return model;
+                            }
 
                         }
                     }

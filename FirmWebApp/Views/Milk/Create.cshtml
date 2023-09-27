@@ -3,7 +3,22 @@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+    int i = 0;
+    
 }
+
+@section style{
+    <style>
+        table  tr td{
+            text-align:center;
+        }
+
+        table th{
+            text-align: center;
+        }
+    </style>
+}
+
 
 <div class="content-header">
     <div class="container-fluid ">
@@ -35,42 +50,53 @@
                         </div>
                     }
                     <div class="row mx-2">
-                        <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group">
                                 <label asp-for="Date" class="control-label"> Date </label>
-                                <input asp-for="Date" type="date" class="form-control" placeholder="Enter Milking Date">
+                                <input asp-for="Date" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter Milking Date">
                             </div>
                         </div>
-                    
+
+                        @*<div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="form-group">
+                        <label asp-for="CowId" class="control-label">Cow Tag No.</label>
+                        <select required asp-for="CowId" class="form-control" asp-items="ViewBag.cowList">
+                        <option value="">-- Select Cow Tag No.--</option>
+                        </select>
+                        </div>
+                        </div>
                         <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="form-group">
+                        <label asp-for="ShiftVal" class="control-label">Shift</label>
+                        <select asp-for="ShiftVal" asp-items="Html.GetEnumSelectList<Shift>()" class="form-control"></select>
+                        </div>
+                        </div>*@
+                        <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group">
-                                <label asp-for="CowId" class="control-label">Cow Tag No.</label>
-                                <select required asp-for="CowId" class="form-control" asp-items="ViewBag.cowList">
-                                    <option value="">-- Select Cow Tag No.--</option>
+                                <label asp-for="ShiftVal" class="control-label"> Shift </label>
+                              <select id="shiftValue" required class="form-control" asp-items="@Html.GetEnumSelectList<Shift>()"
+                                        value="">
+                                   <option> Select Shift</option>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="ShiftVal" class="control-label">Shift</label>
-                                <select asp-for="ShiftVal" asp-items="Html.GetEnumSelectList<Shift>()" class="form-control"></select>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 col-lg-6">
-                            <div class="form-group">
-                                <label asp-for="TotalMilk" class="control-label"> Milk Collection (Litre) </label>
-                                <input asp-for="TotalMilk" required class="form-control" placeholder="Collected Milk in litre">
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-lg-12">
-                            <div class="form-group">
-                                <label asp-for="Remarks" class="control-label"> Remarks </label>
-                                <textarea asp-for="Remarks" class="form-control" placeholder="Enter Remarks" maxlength="100"></textarea>
 
+                        <div class="col-md-4 col-sm-6 col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="ShadeNo" class="control-label"> Shade Number </label>
+                                <input asp-for="ShadeNo" required class="form-control" placeholder="Shade Number">
                             </div>
                         </div>
+
                     </div>
-                    <div class="row mx-2">
+                    @*  <div class="col-md-12 col-sm-12 col-lg-12">
+                    <div class="form-group">
+                    <label asp-for="Remarks" class="control-label"> Remarks </label>
+                    <textarea asp-for="Remarks" class="form-control" placeholder="Enter Remarks" maxlength="100"></textarea>
+
+                    </div>
+                    </div>*@
+                    <div class="row mx-2 float-right">
                         <div class="form-group col-sm-12">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -82,6 +108,61 @@
         </div>
     </div>
 </section>
+<div class="w-75 mx-auto">
+    <form asp-action="Create" asp-controller="Milk" method="post">
+        <table id="milkCollectionTable" class="display table table-bordered">
+            <thead>
+                <tr> 
+                    <th>Sl</th>
+                    <th>Cow tag No.</th>
+                    
+
+                    <th>Milk Collection</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                @if (Model != null)
+                {
+                    foreach (var list in Model.milkServiceVmList)
+                    {
+
+                        <tr> 
+                            <td>@(i+1)</td>
+                            <td>@list.CowTagId</td>
+                           
+                            <td><input asp-for="milkServiceVmList[i].TotalMilk" /></td>
+                          
+                        </tr>
+
+                        i++;
+                    }
+
+                }
+            </tbody>
+            <tfoot class="table-borderless">
+                <tr>
+                    <td colspan="3">
+                    <div class="row mx-2 float-right">
+                        <div class="form-group col-sm-12">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    </td>
+                </tr>
+
+
+            </tfoot>
+        </table>
+
+    </form>
+</div>
+
+
+
+
+
 
 @section Scripts {
     @{
@@ -91,7 +172,13 @@
         $(document).ready(function () {
             $('#MilkMonitor').addClass('menu-open');
             $('#Milk').addClass('active');
-
+            $('#milkCollectionTable').DataTable({
+                select: {
+                    style: 'os',
+                    items: 'cell'
+                }
+                        $('#shiftValue').val((@Model.ShiftVal??0));
+            });
         });
     </script>
     <script>
