@@ -1,5 +1,4 @@
-﻿using Firm.Service.Services.FeedConsumptionCowWise_Services;
-using Firm.Service.Services.Report_Services.MilkReport_Services;
+﻿using Firm.Service.Services.Report_Services.ReportViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +11,11 @@ namespace Firm.Service.Services.Report_Services
     {
         Task<Vaccine_Treatment_ReportVM> Treatment_Report(Vaccine_Treatment_ReportVM VTReportVM);
         Task<FeddingCostReportVM> FeddingCostReport(FeddingCostReportVM FeddingReport);
+        Task<MilkReportVM> MilkReport(MilkReportVM milkReport);
+        Task<IndividualCowReportVM> IndividualCowSummary(IndividualCowReportVM individualCow);
+        Task<CowCostTotalVM> CowCost();
+
+
+
     }
 }

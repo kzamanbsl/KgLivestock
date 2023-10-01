@@ -7,31 +7,58 @@ namespace FirmWebApp.Controllers.Cow
 {
     public class MilkController : Controller
     {
-        public readonly ICowService cowService;
-        public readonly IMilkService milkService;
+        public readonly ICowService _cowService;
+        public readonly IMilkService _milkService;
         public MilkController(ICowService cowService, IMilkService milkService)
         {
-            this.cowService = cowService;
-            this.milkService = milkService;
+            _cowService = cowService;
+            _milkService = milkService;
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.cowlist = new SelectList((await cowService.GetAll()).Select(s => new { Id = s.Id, Name = s.TagId }), "Id", "Name");
-            var data = await milkService.GetAll();
+            ViewBag.cowlist = new SelectList((await _cowService.GetAll()).Select(s => new { Id = s.Id, Name = s.TagId }), "Id", "Name");
+            var data = await _milkService.GetAll();
             return View(data);
         }
         public async Task<IActionResult> Create()
         {
-            var cowList = await cowService.GetAll();
+            var cowList = await _cowService.GetAll();
             ViewBag.cowlist = new SelectList((cowList).Select(s => new { Id = s.Id, Name = s.TagId }), "Id", "Name");
             return View();
         }
-        [HttpPost]
+
+
+        [HttpGet]    
+        
         public async Task<IActionResult> Create(MilkServiceViewModel model)
+        {
+            var cowModel = new MilkServiceViewModel();
+            try
+            {
+                cowModel.Date = model.Date;
+                cowModel.ShadeNo=model.ShadeNo;
+                cowModel.ShiftVal = model.ShiftVal;
+                cowModel.milkServiceVmList=await  _milkService.MilkingCowList(model);
+                return View(cowModel);
+            }
+            catch
+            {
+                return View(cowModel);
+
+            }
+        }
+
+        
+
+        [HttpPost]
+        public async Task<IActionResult> CreateMilk(MilkServiceViewModel model)
+        
+        
+        
         {
             try
             {
-                var result = await milkService.AddNewMilk(model);
+                var result = await _milkService.AddNewMilk(model);
 
                 //if (!string.IsNullOrEmpty(result.ErrorMessage))
                 //{
@@ -50,10 +77,10 @@ namespace FirmWebApp.Controllers.Cow
         [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
-            var cowList = await cowService.GetAll();
+            var cowList = await _cowService.GetAll();
 
             ViewBag.cowlist = new SelectList((cowList).Select(s => new { Id = s.Id, Name = s.TagId }), "Id", "Name");
-            var obj = await milkService.GetById(id);
+            var obj = await _milkService.GetById(id);
             return View(obj);
         }
         [HttpPost]
@@ -61,7 +88,7 @@ namespace FirmWebApp.Controllers.Cow
         {
             try
             {
-                var result = await milkService.UpdateMilk(model);
+                 await _milkService.UpdateMilk(model);
 
                 //if (!string.IsNullOrEmpty(result.ErrorMessage))
                 //{
@@ -81,7 +108,7 @@ namespace FirmWebApp.Controllers.Cow
 
         public async Task<IActionResult> Delete(long id)
         {
-            var obj = await milkService.Remove(id);
+            var obj = await _milkService.Remove(id);
             return RedirectToAction("Index");
         }
     }

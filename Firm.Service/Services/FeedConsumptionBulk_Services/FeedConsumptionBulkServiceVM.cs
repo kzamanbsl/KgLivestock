@@ -13,11 +13,12 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         public DateTime Date { get; set; }
         public long FeedCategoryId { get; set; }
         public string FeedCategoryName { get; set; }
-
-        [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+        public int ShadeNo { get; set; }
+        public int LineNo { get; set; }
         public decimal Quantity { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+
         public decimal UnitPrice { get; set; }
-        List<FeedConsumptionCowWiseServiceVM> feedConsumptionCowWiseServiceVMList { get; set; }
+       public  List<FeedConsumptionBulkServiceVM> feedConsumptionList { get; set; }
     }
 }

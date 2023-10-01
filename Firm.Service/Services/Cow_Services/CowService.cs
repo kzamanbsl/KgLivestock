@@ -43,7 +43,9 @@ namespace Firm.Service.Services.Cow_Services
                 cow.CowTeeth = model.CowTeeth;
                 cow.Color = model.Color;
                 cow.ShedNo = model.ShedNo;
+                cow.LineNo = model.LineNo;
                 cow.LivestockTypeVal = model.LivestockTypeVal;
+                cow.CreatedOn = DateTime.Now;
                 context.Cows.Add(cow);
                 var res = await context.SaveChangesAsync();
 
@@ -84,6 +86,8 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
+
                 model.LivestockTypeVal = cow.LivestockTypeVal;
 
                
@@ -121,6 +125,7 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
                 model.LivestockTypeVal = cow.LivestockTypeVal;
                 model.BreedId = cow.BreedId;
                 //model.BreedName = cow.BreedId == 0 ? "" : context.Breeds.FirstOrDefault(a => a.Id == cow.BreedId).BreedName;
@@ -147,8 +152,8 @@ namespace Firm.Service.Services.Cow_Services
         public async Task<CowServiceViewModel> UpdateCow(CowServiceViewModel model)
         {
 
-            bool isTagIdExists = await context.Cows.AnyAsync(c => c.TagId == model.TagId);
-            if (isTagIdExists)
+            var isTagIdExists =  await context.Cows.AsQueryable().AsNoTracking().Where(c => c.TagId == model.TagId && (c.IsActive==true)).ToListAsync();
+            if (isTagIdExists.Count()>1)
             {
                 model.ErrorMessage = "TagId already exists. Please choose a unique TagId.";
                 return model;
@@ -156,7 +161,7 @@ namespace Firm.Service.Services.Cow_Services
 
             try
             {
-                Cow cow = await context.Cows.FirstOrDefaultAsync(c => c.Id == model.Id);
+                Cow cow =  context.Cows.AsNoTracking().FirstOrDefault(c => c.Id == model.Id);
                 if (cow != null)
                 {
                     cow.PurchaseDate = model.PurchaseDate;
@@ -172,7 +177,9 @@ namespace Firm.Service.Services.Cow_Services
                     cow.CowTeeth = model.CowTeeth;
                     cow.Color = model.Color;
                     cow.ShedNo = model.ShedNo;
+                    cow.LineNo = model.LineNo;
                     cow.LivestockTypeVal = model.LivestockTypeVal;
+                    cow.UpdatedOn = DateTime.Now;
                     context.Entry(cow).State = EntityState.Modified;
                     await context.SaveChangesAsync();
                 }
@@ -216,6 +223,7 @@ namespace Firm.Service.Services.Cow_Services
                 model.CowTeeth = cow.CowTeeth;
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
+                model.LineNo = cow.LineNo;
                 model.LivestockTypeVal = cow.LivestockTypeVal;
                 model.BreedId = cow.BreedId;
                 model.BreedName = cow.BreedId == 0 ? "" : context.Breeds.FirstOrDefault(a => a.Id == cow.BreedId).BreedName;
@@ -247,7 +255,7 @@ namespace Firm.Service.Services.Cow_Services
                 var feedConsumed =  await context.FeedConsumptionCowWises.Where(v=>v.IsActive == true && v.CowId == model.Id).ToListAsync();
                 var milkproduced = await context.MilkMonitors.Where(v => v.IsActive == true && v.CowId == model.Id).ToListAsync();
 
-                //Bilnding data to view started here
+                // Bilnding data to view started here
                 //Vaccine data
                 model.cowSummaryVM.TotalExpense = (decimal?)cow.Price;
                 if (vaccines != null)
@@ -265,7 +273,7 @@ namespace Firm.Service.Services.Cow_Services
                     model.cowSummaryVM.TotalVaccineCost = vaccines.Select(c=>c.Price).Sum();
                     model.cowSummaryVM.TotalExpense = model.cowSummaryVM.TotalExpense + model.cowSummaryVM.TotalVaccineCost;
                 }
-                //Treatement data
+                // Treatement data
                if(treatments != null)
                {
                     foreach (var treatment in treatments)

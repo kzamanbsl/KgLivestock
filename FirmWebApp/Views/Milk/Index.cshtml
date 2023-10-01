@@ -24,14 +24,17 @@
     </div>
     <div class="card-body">
         <div class="table-responsive-sm">
-            <table id="milktable" class="table  table-bordered table-hover">
+            <table id="milktable" class="display table  border table-hover">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Date</th>
-                        <th>Cow Tag</th>
-                        <th>Milk Collection (Litre)</th>
-                        <th>Shift</th>
+                        <th>Tag No.</th>
+                       
+                        <th>Mourning Shift (Litre)</th>
+                        <th>Day Shift (Litre)</th>
+                        <th>Evening Shift (Litre)</th>  
+                        <th>Total Milk (Litre)</th>
                         <th>Action</th>
                         <th>Details</th>
                     </tr>
@@ -47,12 +50,16 @@
                             <td>@SN</td>
                             <td>@treatment.Date.ToShortDateString()</td>
                             <td>@treatment.CowTagId</td>
-                            <td>@treatment.TotalMilk</td>
-                            <td>@treatment.ShiftName</td>
+                        
+                            <td style="width:120px">@treatment.MourningShift</td>
+                                <td style="width:100px">@treatment.DayShift</td>
+                            <td style="width:100px">@treatment.EveningShift</td>
+                            <td style="width:100px">@treatment.TotalMilk</td>
+                           
                             <td>
-                               <a href="@Url.Action("Edit", new { id = treatment.Id })">Edit</a>
+                                <a href="@Url.Action("Edit", new { id = treatment.Id })">Edit</a>
                                <span> | </span>
-                               <a href="@Url.Action("Delete", new { id = treatment.Id })" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+                                <a href="@Url.Action("Delete", new { id = treatment.Id})" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
                             </td>
                           
                             <td>

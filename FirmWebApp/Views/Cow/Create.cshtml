@@ -26,7 +26,7 @@
                     <div class="row mx-2">
 
 
-                        <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="PurchaseDate" class="control-label">Purchase Date (কেনার তারিখ)</label>
                                 <input asp-for="PurchaseDate" class="form-control" placeholder="Enter purchase date">
@@ -104,10 +104,17 @@
                                 <input asp-for="ShedNo" class="form-control" id="cow-weight" placeholder="No of Shed">
                             </div>
                         </div>
+                        
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="LineNo" class="control-label">Line No. (সারি নম্বর)</label>
+                                <input asp-for="LineNo" class="form-control" id="cow-weight" placeholder="No of Row">
+                            </div>
+                        </div>
 
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
-                                <label asp-for="TagId" class="control-label">Tag (ট্যাগ)</label>
+                                <label asp-for="TagId" class="control-label">Tag No.(ট্যাগ)</label>
                                 <input asp-for="TagId" class="form-control" placeholder="Enter Tag">
                             </div>
                         </div>
@@ -119,9 +126,9 @@
                         </div>
 
                     </div>
-                    <div class="row mx-2">
-                        <div class="form-group col-sm-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="row mx-2 ">
+                        <div class="form-group col-sm-12 ">
+                            <button type="submit" class="btn btn-primary float-End">Submit</button>
                         </div>
                     </div>
 

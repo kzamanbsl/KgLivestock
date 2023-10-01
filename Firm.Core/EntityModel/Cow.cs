@@ -25,6 +25,7 @@ namespace Firm.Core.EntityModel
         public string MotherTag { get; set; }
         public Gender? CalfGender { get; set; }
         public string ShedNo { get; set; }
+        public string LineNo { get; set; }
         public LivestockType? LivestockTypeVal { get; set; }
     }
 }

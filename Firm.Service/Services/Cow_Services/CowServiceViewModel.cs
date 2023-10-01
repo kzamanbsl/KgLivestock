@@ -35,6 +35,7 @@ namespace Firm.Service.Services.Cow_Services
         public string Color { get; set; }
         public string ErrorMessage { get; internal set; }
         public string ShedNo { get; set; }
+        public string LineNo { get; set; }
         public LivestockType? LivestockTypeVal { get; set; }
         public string LivestockTypeName { get; set; }
         public VaccineServiceViewModel vaccineVM { get; set; }

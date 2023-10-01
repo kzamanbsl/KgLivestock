@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 
 }
-@model FeddingCostReportVM
+@model Vaccine_Treatment_ReportVM
 
 @section style{
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
@@ -27,19 +27,19 @@
 <section>
     <div class="container  w-75">
         <div class="mt-5 mb-2">
-            <h3> Feed Report</h3>
-            <form asp-controller="FeedingCostReport" asp-action="Index" method="post">
+            <h3>Vaccine and Treatment Report</h3>
+            <form asp-controller="Report" asp-action="MedicalExpenseReport" method="post">
 
-
+               
 
                 <div class="row p-1">
                     <div class="col-md-5 ">
                         <label for="startDate">Start Date:</label>
-                        <input asp-for="StartDate" type="date" value="@Model.StartDate.ToString("yyyy-MM-dd")" class="form-control" id="startDate">
+                        <input asp-for="StartDate" type="date" value="@Model.StartDate.ToString("yyyy-MM-dd")"  class="form-control" id="startDate">
                     </div>
                     <div class="col-md-5">
                         <label for="endDate">End Date:</label>
-                        <input asp-for="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" type="date" class="form-control" id="endDate">
+                        <input asp-for="EndDate" type="date" value="@Model.EndDate.ToString("yyyy-MM-dd")"  class="form-control" id="endDate">
                     </div>
                     <div class="col-md-2 mt-4">
                         <button class="btn btn-primary d-block form-control mt-1" id="showButton">Show</button>
@@ -52,7 +52,7 @@
 
                     @if (Model != null)
                     {
-                        <button formtarget="_blank" formaction="/FeedingCostReport/FeddingCostSummary" class="btn btn-secondary  form-control">Print</button>
+                        <button formtarget="_blank" formaction="/Report/MedicalExpenseSummary" class="btn btn-secondary  form-control">Print</button>
 
                     }
 
@@ -68,24 +68,25 @@
                 <tr>
                     <th>Date</th>
                     <th>Tag Number</th>
-                    <th>Feeding Quantity</th>
-                    <th>Consumption For</th>
-                    
+                    <th>Expense For</th>
+                    <th>Treatment For</th>
+                    <th>Doctor Name</th>
+                    <th>Price</th>
                 </tr>
             </thead>
             <tbody>
                 @if (Model != null)
                 {
 
-                    @foreach (var cow in Model.FeddingCostList)
+                    @foreach (var cow in Model.VTReportVM)
                     {
                         <tr>
                             <td>@cow.Day</td>
-                            <td>@cow.TagNo</td>
-                            <td>@cow.FoodUnit</td>
-
-                            <td>@cow.Consumption.ToString("F2")</td>
-
+                            <td>@cow.TagId</td>
+                            <td>@cow.CostingType</td>
+                            <td>@cow.TreatmentFor</td>
+                            <td>@cow.DoctorName</td>
+                            <td>@cow.Price.ToString("F2")</td>
 
                         </tr>
                     }
@@ -98,8 +99,10 @@
                     <tr>
                         <td> Total Day: @Model.TottalDay</td>
                         <td>Total Cow: @Model.TottalCow</td>
-                        <td>Total Quantity: @Model.TottalFoodUnit.ToString("F2")</td>
-                        <td>Total Cost: @Model.TottalConsumption.ToString("F2")</td>
+                        <td></td> 
+                        <td></td>
+                        <td></td>
+                        <td>Total Cost: @Model.TottalPrice.ToString("F2")</td>
                     </tr>
                 }
             </tfoot>
@@ -115,11 +118,10 @@
 
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
-        $('#FeedReport').addClass('active');
+        $('#VTreatmentReport').addClass('active');
         var table = $('#example').DataTable();
 
     });
 </script>
-
 
 

@@ -3,6 +3,7 @@ using Firm.Service.Services.FeedConsumptionBulk_Services;
 using Firm.Service.Services.FeedEntry_Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace FirmWebApp.Controllers.Cow
 {
@@ -25,7 +26,21 @@ namespace FirmWebApp.Controllers.Cow
         {
             ViewBag.feedCategoryList = new SelectList((await feedCategoryService.GetAll()).Select(s => new { Id = s.Id, Name = s.FeedCategoryName }), "Id", "Name");
             return View();
+        } 
+        
+        
+        public async Task<IActionResult> ShadeLineFeedList(FeedConsumptionBulkServiceVM model)
+        {
+            ViewBag.feedCategoryList = new SelectList((await feedCategoryService.GetAll()).Select(s => new { Id = s.Id, Name = s.FeedCategoryName }), "Id", "Name");
+
+             model.feedConsumptionList = await feedConsumptionBulkService.ShadeLineFeedList();
+            
+
+
+            return View("Views/FeedConsumptionBulk/Create.cshtml",model);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Create(FeedConsumptionBulkServiceVM model)
         {
