@@ -28,7 +28,8 @@ namespace FirmWebApp.Controllers.Cow
         }
 
 
-        [HttpPost]
+        [HttpGet]    
+        
         public async Task<IActionResult> Create(MilkServiceViewModel model)
         {
             var cowModel = new MilkServiceViewModel();
@@ -51,6 +52,9 @@ namespace FirmWebApp.Controllers.Cow
 
         [HttpPost]
         public async Task<IActionResult> CreateMilk(MilkServiceViewModel model)
+        
+        
+        
         {
             try
             {
@@ -76,7 +80,7 @@ namespace FirmWebApp.Controllers.Cow
             var cowList = await _cowService.GetAll();
 
             ViewBag.cowlist = new SelectList((cowList).Select(s => new { Id = s.Id, Name = s.TagId }), "Id", "Name");
-            var obj = await _cowService.GetById(id);
+            var obj = await _milkService.GetById(id);
             return View(obj);
         }
         [HttpPost]

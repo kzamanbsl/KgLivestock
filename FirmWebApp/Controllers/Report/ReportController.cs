@@ -26,11 +26,11 @@ namespace FirmWebApp.Controllers.Report
         {
             MilkReportVM milkReport = new MilkReportVM();
 
-            milkReport.StartDate = DateTime.Now.AddMonths(-2);
+            milkReport.StartDate = DateTime.Now.AddDays(-7);
             milkReport.EndDate = DateTime.Now;
 
             milkReport = await _reportService.MilkReport(milkReport);
-            milkReport.StartDate = DateTime.Now.AddMonths(-2);
+            milkReport.StartDate = DateTime.Now.AddDays(-7);
             milkReport.EndDate = DateTime.Now;
             return View("Views/MilkReport/Index.cshtml", milkReport);
         }
@@ -55,10 +55,10 @@ namespace FirmWebApp.Controllers.Report
         public async Task<IActionResult> FeedReport()
         {
             var feedModel = new FeddingCostReportVM();
-            feedModel.StartDate = DateTime.Now.AddDays(-15);
+            feedModel.StartDate = DateTime.Now.AddDays(-7);
             feedModel.EndDate = DateTime.Now;
             feedModel = await _reportService.FeddingCostReport(feedModel);
-            feedModel.StartDate = DateTime.Now.AddMonths(-2);
+            feedModel.StartDate = DateTime.Now.AddDays(-7);
             feedModel.EndDate = DateTime.Now;
 
             return View("Views/FeedReport/Index.cshtml",feedModel);
@@ -111,10 +111,10 @@ namespace FirmWebApp.Controllers.Report
         public async Task<IActionResult> MedicalExpenseReport()
         {
             var model = new Vaccine_Treatment_ReportVM();
-            model.StartDate = DateTime.Now.AddMonths(-2);
+            model.StartDate = DateTime.Now.AddDays(-15);
             model.EndDate = DateTime.Now;
             model = await _reportService.Treatment_Report(model);
-            model.StartDate = DateTime.Now.AddMonths(-2);
+            model.StartDate = DateTime.Now.AddDays(-15);
             model.EndDate = DateTime.Now;
             return View("Views/MedicalExpenseReport/Index.cshtml", model);
         }

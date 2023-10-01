@@ -32,21 +32,27 @@ namespace Firm.Service.Services.Milk_Services
 
             try
             {
-                MilkMonitor milk = new MilkMonitor();
-                milk.Date = model.Date;
-                milk.ShiftVal = model.ShiftVal;
-                milk.TotalMilk = model.TotalMilk;
-                milk.Remarks = model.Remarks;
-                milk.CowId = model.CowId;
-                milk.CreatedOn = DateTime.Now;
-                milk.IsActive = true;
-                context.MilkMonitors.Add(milk);
+                var milkList = new List<MilkMonitor>();
+
+                foreach (var milkmodel in model.milkServiceVmList)
+                {
+                    MilkMonitor milk = new MilkMonitor();
+                    milk.Date = model.Date;
+                    milk.ShiftVal = model.ShiftVal ;
+                    milk.TotalMilk = milkmodel.TotalMilk;
+                    //milk.Remarks = model.Remarks;
+                    milk.CowId = milkmodel.CowId;
+                    milk.CreatedOn = DateTime.Now;
+                    milk.IsActive = true;
+                    milkList.Add(milk);
+                }
+                context.MilkMonitors.AddRange(milkList);
                 var res = await context.SaveChangesAsync();
 
-                if (res != 0)
-                {
-                    model.Id = milk.Id;
-                }
+                //if (res != 0)
+                //{
+                //    model.Id = milk.Id;
+                //}
 
 
                 return model;
@@ -61,7 +67,7 @@ namespace Firm.Service.Services.Milk_Services
         public async Task<List<MilkServiceViewModel>> GetAll()
         {
             List<MilkServiceViewModel> lists = new List<MilkServiceViewModel>();
-            var data = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(x => x.IsActive == true)
+            var data = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(x => x.IsActive == true && x.Date.Date>=DateTime.Now.Date.AddDays(-1))
                 .GroupBy(c => c.Date).Select(c => new
                 {
                     date = c.Key,
@@ -79,6 +85,7 @@ namespace Firm.Service.Services.Milk_Services
             {
                 foreach (var cow in milk.milkdata)
                 {
+                    var cowObject = context.Cows.AsNoTracking().FirstOrDefault(a => a.Id == cow.cowId);
                     MilkServiceViewModel model = new MilkServiceViewModel();
                     model.Date = milk.date;
                     //model.Remarks = milk.Remarks;
@@ -87,9 +94,9 @@ namespace Firm.Service.Services.Milk_Services
                     model.EveningShift = cow.eveningShift;
                     model.TotalMilk = cow.dayShift + cow.mourningShift + cow.eveningShift;
                     model.Remarks = cow.remark;
-                    model.CowId = cow.cowId;
+                    model.CowId = cowObject.Id;
                     model.Id = cow.id;
-                    model.CowTagId = cow.cowId == 0 ? "" : context.Cows.AsNoTracking().FirstOrDefault(a => a.Id == cow.cowId).TagId;
+                    model.CowTagId = cow.cowId == 0 ? "" : cowObject.TagId;
 
                     lists.Add(model);
                 }
@@ -101,21 +108,22 @@ namespace Firm.Service.Services.Milk_Services
         {
             var milk = await context.MilkMonitors.FindAsync(id);
 
-            var milkdata=await context.MilkMonitors.AsQueryable().AsNoTracking()
-                       .Where(c=>c.CowId==milk.CowId).GroupBy(c=>c.Date==milk.Date)
-                       .Select(c=> new {
-                           date=c.Select(c=>c.Date).FirstOrDefault(),
+            var milkdata = await context.MilkMonitors.AsQueryable().AsNoTracking()
+                       .Where(c => c.CowId == milk.CowId && c.Date == milk.Date&& c.IsActive==true).GroupBy(c => c.Date)
+                       .Select(c => new
+                       {
+                           date = c.Select(c => c.Date).FirstOrDefault(),
                            dayShift = c.Where(c => c.ShiftVal == (Shift)2).Select(c => c.TotalMilk).ToList().AsQueryable().Sum(),
                            mourningShift = c.Where(c => c.ShiftVal == (Shift)1).Select(c => c.TotalMilk).ToList().AsQueryable().Sum(),
                            eveningShift = c.Where(c => c.ShiftVal == (Shift)3).Select(c => c.TotalMilk).ToList().AsQueryable().Sum(),
                            remark = c.Select(c => c.Remarks).FirstOrDefault()
                        }).ToListAsync();
 
-           
+
             MilkServiceViewModel model = new MilkServiceViewModel();
             foreach (var cowMilk in milkdata)
             {
-               
+
                 model.Date = cowMilk.date;
                 //model.Remarks = milk.Remarks;
                 model.DayShift = cowMilk.dayShift;
@@ -136,48 +144,58 @@ namespace Firm.Service.Services.Milk_Services
         public async Task<MilkServiceViewModel> UpdateMilk(MilkServiceViewModel model)
         {
             var milkData = await context.MilkMonitors.AsQueryable().AsNoTracking()
-                         .Where(c => c.CowId == model.CowId && c.Date == model.Date)
+                         .Where(c => c.CowId == model.CowId && c.Date == model.Date &&c.IsActive==true)
                          .ToListAsync();
 
             //var dayShift = milkData.Where(c => c.ShiftVal == (Shift)2).FirstOrDefault();
             //var mourningShift = milkData.Where(c => c.ShiftVal == (Shift)1).FirstOrDefault();
             //var eveningShift = milkData.Where(c => c.ShiftVal == (Shift)3).FirstOrDefault();
             //var remark = milkData.FirstOrDefault();
-            int value = 0;
-
+          
+            int dayShift = 0;
+            int mourningShift = 0;
+            int eveningShift = 0;
+            
             foreach (var milk in milkData)
             {
-                if (value > 3)
-                {
-                    break;
-                }
                
-                if(milk.ShiftVal ==(Shift)2)
+
+                if (milk.ShiftVal == (Shift)2 && dayShift<1)
                 {
                     milk.TotalMilk = Convert.ToDecimal(model.DayShift);
 
-                     value++;
-                } 
-                if(milk.ShiftVal == (Shift)1)
+                  
+                    dayShift++;
+                   
+                }else if (milk.ShiftVal == (Shift)1 && mourningShift < 1)
                 {
                     milk.TotalMilk = Convert.ToDecimal(model.MourningShift);
-                     value++;
-                } 
-                if(milk.ShiftVal == (Shift)3)
+                
+                    mourningShift++;
+                    
+                }else if (milk.ShiftVal == (Shift)3 && eveningShift < 1)
                 {
                     milk.TotalMilk = Convert.ToDecimal(model.EveningShift);
-                     value++;
+                  
+                    eveningShift++;
+                    
+                }else{
+                        milk.TotalMilk = 0;
+
+                        
                 }
+                    
+                
 
                 milk.UpdatedOn = DateTime.Now;
                 milk.Remarks = model.Remarks;
-                
-                
+
+
             }
 
             try
             {
-                
+
                 context.UpdateRange(milkData);
                 await context.SaveChangesAsync();
                 return model;
@@ -185,18 +203,18 @@ namespace Firm.Service.Services.Milk_Services
             catch (Exception ex)
             {
                 model.ErrorMessage = "Error occurred while adding a new milk. Details: " + ex.Message;
-                return model; 
+                return model;
             }
         }
 
         public async Task<bool> Remove(long id)
         {
             var milk = await context.MilkMonitors.FindAsync(id);
-             var milkList =await context.MilkMonitors.AsQueryable()
-                            .Where(x => x.CowId==milk.CowId && x.Date== milk.Date)
-                            .ToListAsync();
+            var milkList = await context.MilkMonitors.AsQueryable()
+                           .Where(x => x.CowId == milk.CowId && x.Date == milk.Date)
+                           .ToListAsync();
 
-            foreach(var data in milkList)
+            foreach (var data in milkList)
             {
                 data.IsActive = false;
             }
@@ -212,31 +230,33 @@ namespace Firm.Service.Services.Milk_Services
             {
                 return false;
             }
-          
+
         }
 
-        public async  Task<List<MilkServiceViewModel>> MilkingCowList(MilkServiceViewModel model)
+        public async Task<List<MilkServiceViewModel>> MilkingCowList(MilkServiceViewModel model)
         {
-            if(model is null)
+            if (model is null)
             {
-                
+
             }
-            var cowList=await context.Cows.AsQueryable().AsNoTracking()
-             
-                .Where(c=> c.IsActive==true && c.LivestockTypeVal == (LivestockType)2
-                &&c.ShedNo.Equals(model.ShadeNo))
-                  
-                .Select(c=> new {cowId=c.Id,tagId=c.TagId}).OrderBy(c=>c.tagId).ToListAsync();
+            var cowList = await context.Cows.AsQueryable().AsNoTracking()
+
+                .Where(c => c.IsActive == true && c.LivestockTypeVal == (LivestockType)2
+                && c.ShedNo.Equals(model.ShadeNo))
+
+                .Select(c => new { cowId = c.Id, tagId = c.TagId }).OrderBy(c => c.tagId).ToListAsync();
 
 
             var listVM = new List<MilkServiceViewModel>();
-            foreach(var cow in cowList)
+            foreach (var cow in cowList)
             {
                 var modelObject = new MilkServiceViewModel()
                 {
                     CowId = cow.cowId,
-                    CowTagId = cow.tagId
-
+                    CowTagId = cow.tagId,
+                    ShiftVal=model.ShiftVal,
+                    Date=model.Date
+                    
                 };
 
 

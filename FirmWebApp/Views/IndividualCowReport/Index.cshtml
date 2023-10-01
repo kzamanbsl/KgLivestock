@@ -145,6 +145,59 @@
                 }
             </tfoot>
         </table>
+
+
+        <table id="cowSummaryTable" class="display w-100 text-center table border" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Expense</th>
+                    <th> Amount</th>
+                    <th> Profit/Loss</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+
+                    <tr>
+
+                        <td>Cow Buy Cost</td>
+                        <td>@Model.BuyCost</td> 
+                        <td></td>
+                    </tr>
+                    <tr>
+
+                        <td>Vaccine Cost</td>
+                        <td>@Model.TotalVacCost.ToString("F2")</td>
+                    </tr>
+                    <tr>
+
+                        <td>Treatment Cost</td>
+                        <td>@Model.TotalTreatment.Value.ToString("F2")</td>
+                    </tr>
+                    <tr>
+
+                        <td>Feed Cost</td>
+                        <td>@Model.TotalFeedCost.ToString("F2")</td>
+                    </tr>
+
+
+
+
+                }
+            </tbody>
+            <tfoot>
+                @if (Model != null)
+                {
+                    <tr class="" style="border:solid 2px">
+
+                        <td>Total Cost</td>
+                        <td>@Model.TotalCowCost.Value.ToString("F2")</td>
+                    </tr>
+                }
+            </tfoot>
+        </table>
+
 </div>
 </section>
 @section Scripts{

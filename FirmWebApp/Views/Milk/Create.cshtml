@@ -4,16 +4,17 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
     int i = 0;
-    
+    var shiftValue = Model == null ? 0 : Model.ShiftVal;
+    //var Date = Model == null ?  : Model.Date;
 }
 
 @section style{
     <style>
-        table  tr td{
-            text-align:center;
+        table tr td {
+            text-align: center;
         }
 
-        table th{
+        table th {
             text-align: center;
         }
     </style>
@@ -40,8 +41,9 @@
                 <h5 class="card-title">Milk</h5>
             </div>
 
+
             <div class="card-body">
-                <form asp-action="Create" asp-controller="Milk" method="post">
+                <form asp-action="Create" asp-controller="Milk" method="get">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"] as string))
                     {
@@ -53,30 +55,26 @@
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group">
                                 <label asp-for="Date" class="control-label"> Date </label>
-                                <input asp-for="Date" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter Milking Date">
+
+                                @if (Model == null)
+                                {
+                                    <input asp-for="Date" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter Milking Date">
+                                }
+
+                                @if (Model != null)
+                                {
+                                    <input asp-for="Date" type="date" value="@Model.Date.ToString("yyyy-MM-dd")" class="form-control" placeholder="Enter Milking Date">
+
+                                }
                             </div>
                         </div>
 
-                        @*<div class="col-md-6 col-sm-12 col-lg-6">
-                        <div class="form-group">
-                        <label asp-for="CowId" class="control-label">Cow Tag No.</label>
-                        <select required asp-for="CowId" class="form-control" asp-items="ViewBag.cowList">
-                        <option value="">-- Select Cow Tag No.--</option>
-                        </select>
-                        </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12 col-lg-6">
-                        <div class="form-group">
-                        <label asp-for="ShiftVal" class="control-label">Shift</label>
-                        <select asp-for="ShiftVal" asp-items="Html.GetEnumSelectList<Shift>()" class="form-control"></select>
-                        </div>
-                        </div>*@
+                       
                         <div class="col-md-4 col-sm-6 col-lg-4">
                             <div class="form-group">
-                                <label asp-for="ShiftVal" class="control-label"> Shift </label>
-                              <select id="shiftValue" required class="form-control" asp-items="@Html.GetEnumSelectList<Shift>()"
-                                        value="">
-                                   <option> Select Shift</option>
+                                <label class="control-label"> Shift </label>
+                                <select asp-for="ShiftVal" id="shiftValue" required class="form-control" asp-items="@Html.GetEnumSelectList<Shift>()">
+                                    <option> Select Shift</option>
                                 </select>
                             </div>
                         </div>
@@ -89,33 +87,31 @@
                         </div>
 
                     </div>
-                    @*  <div class="col-md-12 col-sm-12 col-lg-12">
-                    <div class="form-group">
-                    <label asp-for="Remarks" class="control-label"> Remarks </label>
-                    <textarea asp-for="Remarks" class="form-control" placeholder="Enter Remarks" maxlength="100"></textarea>
-
-                    </div>
-                    </div>*@
+                   
                     <div class="row mx-2 float-right">
                         <div class="form-group col-sm-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
                     </div>
 
-
                 </form>
+
             </div>
+
         </div>
     </div>
 </section>
-<div class="w-75 mx-auto">
-    <form asp-action="Create" asp-controller="Milk" method="post">
+
+<form asp-action="CreateMilk" asp-controller="Milk" method="post">
+    <input type="hidden" class="text-center" asp-for="ShiftVal" value="@Model.ShiftVal" />
+    <input type="hidden" class="text-center" asp-for="Date" value="@Model.Date" />
+    <div class="w-75 mx-auto">
         <table id="milkCollectionTable" class="display table table-bordered">
             <thead>
-                <tr> 
+                <tr>
                     <th>Sl</th>
                     <th>Cow tag No.</th>
-                    
+
 
                     <th>Milk Collection</th>
                 </tr>
@@ -123,41 +119,50 @@
             <tbody>
 
 
+
                 @if (Model != null)
                 {
+                 
+
+                  
+
                     foreach (var list in Model.milkServiceVmList)
                     {
-
-                        <tr> 
-                            <td>@(i+1)</td>
-                            <td>@list.CowTagId</td>
-                           
-                            <td><input asp-for="milkServiceVmList[i].TotalMilk" /></td>
+                        <tr>
                           
+
+                            <td>@(i + 1)</td>
+                            <td>
+                                
+                                <input type="hidden" class="text-center" asp-for="milkServiceVmList[i].CowId" value="@list.CowId" />@list.CowTagId
+                            </td>
+
+                            <td><input class="text-center"  value="" asp-for="milkServiceVmList[i].TotalMilk" /> Litre</td>
+
                         </tr>
 
                         i++;
                     }
-
                 }
+
             </tbody>
             <tfoot class="table-borderless">
                 <tr>
                     <td colspan="3">
-                    <div class="row mx-2 float-right">
-                        <div class="form-group col-sm-12">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="row mx-2 float-right">
+                            <div class="form-group col-sm-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
-                    </div>
                     </td>
                 </tr>
 
 
             </tfoot>
         </table>
+    </div>
+</form>
 
-    </form>
-</div>
 
 
 
@@ -167,18 +172,18 @@
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
     }
+
     <script>
         $(document).ready(function () {
             $('#MilkMonitor').addClass('menu-open');
             $('#Milk').addClass('active');
             $('#milkCollectionTable').DataTable({
-                select: {
-                    style: 'os',
-                    items: 'cell'
-                }
-                        $('#shiftValue').val((@Model.ShiftVal??0));
+                "paging": false
+
             });
+            $('#milkCollectionTable_info').hide();
         });
     </script>
     <script>

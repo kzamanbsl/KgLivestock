@@ -19,6 +19,6 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
 
         public decimal UnitPrice { get; set; }
-        List<FeedConsumptionCowWiseServiceVM> feedConsumptionCowWiseServiceVMList { get; set; }
+       public  List<FeedConsumptionBulkServiceVM> feedConsumptionList { get; set; }
     }
 }

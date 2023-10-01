@@ -28,7 +28,11 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
             //}
             try
             {
-                
+                if(model.feedConsumptionList is null)
+                {
+                    model.ErrorMessage= "Please Input Feed Quantity";
+                    return model;
+                }
 
               
 
@@ -36,27 +40,30 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
                 if (feedCurrentStock != null )
                 {
 
-                    if ((model.LineNo | model.ShadeNo) < 1)
+                    //if ((model.LineNo | model.ShadeNo) < 1)
+                    //{
+                    //    model.ErrorMessage = "Wrong Input Shade and Line Number";
+                    //    return model;
+                    //}
+                    //else
+                    //{
+                    //    var checkShadeLine = await context.Cows.AsQueryable().AsNoTracking()
+                    //                       .AnyAsync(c=>c.ShedNo.Equals(model.ShadeNo.ToString())
+                    //                      && c.LineNo.Equals(model.LineNo.ToString()));
+
+                    //    if(!checkShadeLine )
+                    //    {
+                    //       model.ErrorMessage="Invalid Shade and Line Number";
+                    //        return model;
+                    //    }
+                    //}
+
+
+
+                    foreach(var data in model.feedConsumptionList)
                     {
-                        model.ErrorMessage = "Wrong Input Shade and Line Number";
-                        return model;
+                        model.Quantity+=data.Quantity;
                     }
-                    else
-                    {
-                        var checkShadeLine = await context.Cows.AsQueryable().AsNoTracking()
-                                           .AnyAsync(c=>c.ShedNo.Equals(model.ShadeNo.ToString())
-                                          && c.LineNo.Equals(model.LineNo.ToString()));
-
-                        if(!checkShadeLine )
-                        {
-                           model.ErrorMessage="Invalid Shade and Line Number";
-                            return model;
-                        }
-                    }
-
-
-
-
 
 
 
@@ -98,24 +105,32 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
 
                             //new Logic cow wise consumption
 
-                            var cowList= await context.Cows.AsQueryable().AsNoTracking().Where(c=>c.ShedNo.Equals(model.ShadeNo.ToString())
-                                                                    && c.LineNo.Equals(model.LineNo.ToString())).ToListAsync();
-
-                            decimal UnitPerLiveStock = model.Quantity / cowList.Count();
+                           
 
 
                             List<FeedConsumptionCowWise> CowWiseList = new List<FeedConsumptionCowWise>();
-                            foreach (var liveStock in cowList)
+                            foreach (var liveStock in model.feedConsumptionList)
                             {
-                                FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
-                                feedConsumptionCowWise.Date = feedConsumptionBulk.Date;
-                                feedConsumptionCowWise.CowId = liveStock.Id;
-                                feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
-                                feedConsumptionCowWise.Quantity = UnitPerLiveStock ;
-                                feedConsumptionCowWise.UnitPrice = feedConsumptionBulk.UnitPrice;
-                                feedConsumptionCowWise.CreatedOn = feedConsumptionBulk.CreatedOn;
-                                feedConsumptionCowWise.IsActive = true;
-                                CowWiseList.Add(feedConsumptionCowWise);
+
+                                var cowList = await context.Cows.AsQueryable().AsNoTracking().Where(c => c.IsActive==true &&c.ShedNo.Equals(liveStock.ShadeNo.ToString())
+                                                                   && c.LineNo.Equals(liveStock.LineNo.ToString())).ToListAsync();
+
+                                decimal UnitPerLiveStock = liveStock.Quantity/ cowList.Count();
+
+                                foreach (var cow in cowList)
+                                {
+                                    FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
+                                    feedConsumptionCowWise.Date = model.Date; ;
+                                    feedConsumptionCowWise.CowId = cow.Id;
+                                    feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
+                                    feedConsumptionCowWise.Quantity = UnitPerLiveStock;
+                                    feedConsumptionCowWise.UnitPrice = feedConsumptionBulk.UnitPrice;
+                                    feedConsumptionCowWise.CreatedOn = feedConsumptionBulk.CreatedOn;
+                                    feedConsumptionCowWise.IsActive = true;
+                                    CowWiseList.Add(feedConsumptionCowWise);
+                                }
+
+                               
                             }
                             try
                             {
@@ -151,7 +166,7 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         public async Task<List<FeedConsumptionBulkServiceVM>> GetAll()
         {
             List<FeedConsumptionBulkServiceVM> lists = new List<FeedConsumptionBulkServiceVM>();
-            var data = await context.FeedConsumptionBulks.Where(x => x.IsActive).ToListAsync();
+            var data = await context.FeedConsumptionBulks.Where(x => x.IsActive && x.Date.Date>=DateTime.Now.Date.AddDays(-3)).ToListAsync();
             foreach (var feedConsumptionBulk in data)
             {
                 FeedConsumptionBulkServiceVM model = new FeedConsumptionBulkServiceVM();
@@ -224,6 +239,30 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
             context.Entry(feedConsumptionBulk).State = EntityState.Modified;
             await context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<FeedConsumptionBulkServiceVM>> ShadeLineFeedList()
+        {
+            var shadeList =await  context.Cows.AsQueryable().AsNoTracking()
+                         .Where(c => c.IsActive == true).OrderBy(c => c.ShedNo)
+                         .Select(c => new { shade = c.ShedNo, Line = c.LineNo, }).Distinct()
+                         .OrderBy(c=>c.Line).ToListAsync();
+
+           var modelList=new List<FeedConsumptionBulkServiceVM>();
+            foreach(var shade in shadeList)
+            {
+                var model= new FeedConsumptionBulkServiceVM()
+                {
+                    ShadeNo=Convert.ToInt16(shade.shade),
+                    LineNo=Convert.ToInt16(shade.Line)
+
+                };
+
+
+                modelList.Add(model);
+            }
+
+            return modelList;
         }
     }
 }

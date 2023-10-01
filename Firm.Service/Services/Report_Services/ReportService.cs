@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Firm.Utility.Miscellaneous.Enum;
 
 namespace Firm.Service.Services.Report_Services
 {
@@ -184,8 +185,10 @@ namespace Firm.Service.Services.Report_Services
                .Where(c => c.IsActive == true && c.TagId.Equals(individualCow.TagId.ToString())).Select(c => new
                {
                    tagId = c.TagId,
+                   cowId= c.Id,
                    cowBuy = c.Price,
                    firstWeight = c.Weight,
+                   liveStockType=c.LivestockTypeVal,
                    vaccineCost = _context.Vaccines.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
                    .Sum(v => v.Price),
                    tratmentCost = _context.Treatments.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
@@ -194,9 +197,21 @@ namespace Firm.Service.Services.Report_Services
                    .Sum(c => c.Quantity * c.UnitPrice),
                }).ToListAsync();
 
+          
+
+
             var individualCowCost = new IndividualCowReportVM();
             foreach (var cow in TotalCost)
             {
+                decimal totalMilk = 0;
+                if (cow.liveStockType== LivestockType.Cow)
+                {
+                     totalMilk = _context.MilkMonitors.AsQueryable().AsNoTracking()
+                                       .Where(c => c.CowId == cow.cowId && c.IsActive == true).Select(c => c.TotalMilk)
+                                       .ToList().Sum();
+                }
+                individualCowCost.LivestockType = (LivestockType)cow.liveStockType;
+                individualCowCost.TotalMilkEarn = totalMilk ;
                 individualCowCost.BuyCost = cow.cowBuy;
                 individualCowCost.TotalVacCost = cow.vaccineCost;
                 individualCowCost.TotalTreatment = cow.tratmentCost;

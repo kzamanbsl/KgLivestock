@@ -57,9 +57,9 @@
                             <td style="width:100px">@treatment.TotalMilk</td>
                            
                             <td>
-                               <a href="@Url.Action("Edit", new { id = treatment.Id })">Edit</a>
+                                <a href="@Url.Action("Edit", new { id = treatment.Id })">Edit</a>
                                <span> | </span>
-                               <a href="@Url.Action("Delete", new { id = treatment.Id })" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
+                                <a href="@Url.Action("Delete", new { id = treatment.Id})" onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
                             </td>
                           
                             <td>
