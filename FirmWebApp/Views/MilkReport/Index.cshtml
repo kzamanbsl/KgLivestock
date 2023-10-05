@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
+    int sl = 1;
 }
 @model MilkReportVM
 
@@ -63,9 +63,14 @@
 
             </form>
         </div>
+
+
+
+       
         <table id="example" class="display w-100 text-center table border" cellspacing="0">
             <thead>
                 <tr>
+                    <th>SN</th>
                     <th>Date</th>
                     <th>Tag Number</th>
                     <th>Day Milk</th>
@@ -78,10 +83,12 @@
                     @foreach (var cow in Model.ListMilkReportVM)
                     {
                         <tr>
+                            <td>@sl</td>
                             <td>@cow.Day</td>
                             <td>@cow.CowTagId</td>
                             <td>@cow.TotalMilk.ToString("F2")</td>
                         </tr>
+                        sl++;
                     }
 
                 }
@@ -108,7 +115,9 @@
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
         $('#MilkReport').addClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable({
+            order: [[0, 'desc']]
+        });
 
     });
 </script>

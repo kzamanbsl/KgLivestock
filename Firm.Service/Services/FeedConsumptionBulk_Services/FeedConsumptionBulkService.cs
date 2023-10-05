@@ -120,7 +120,7 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
                                 foreach (var cow in cowList)
                                 {
                                     FeedConsumptionCowWise feedConsumptionCowWise = new FeedConsumptionCowWise();
-                                    feedConsumptionCowWise.Date = model.Date; ;
+                                    feedConsumptionCowWise.Date = model.Date; 
                                     feedConsumptionCowWise.CowId = cow.Id;
                                     feedConsumptionCowWise.FeedCategoryId = feedConsumptionBulk.FeedCategoryId;
                                     feedConsumptionCowWise.Quantity = UnitPerLiveStock;
