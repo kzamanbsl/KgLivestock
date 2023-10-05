@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
+    int sl = 1;
 }
 @model FeddingCostReportVM
 
@@ -66,6 +66,7 @@
         <table id="example" class="display w-100 text-center table border mt-3" cellspacing="0">
             <thead>
                 <tr>
+                    <th>SN</th>
                     <th>Date</th>
                     <th>Tag Number</th>
                     <th>Feeding Quantity</th>
@@ -80,6 +81,7 @@
                     @foreach (var cow in Model.FeddingCostList)
                     {
                         <tr>
+                            <td>@sl</td>
                             <td>@cow.Day</td>
                             <td>@cow.TagNo</td>
                             <td>@cow.FoodUnit</td>
@@ -88,6 +90,7 @@
 
 
                         </tr>
+                        sl++;
                     }
 
                 }
@@ -116,7 +119,9 @@
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
         $('#FeedReport').addClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable({
+            order: [[0, 'desc']]
+        });
 
     });
 </script>

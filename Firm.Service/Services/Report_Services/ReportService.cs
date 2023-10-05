@@ -91,15 +91,21 @@ namespace Firm.Service.Services.Report_Services
             return trObject;
         }
         public async Task<FeddingCostReportVM> FeddingCostReport(FeddingCostReportVM FeddingReport)
-        {
+        { 
+            
             var feedingData = await  _context.FeedConsumptionCowWises.AsQueryable().AsNoTracking()
                  .Where(c => c.IsActive == true & (c.Date >= FeddingReport.StartDate && c.Date <= FeddingReport.EndDate))
-                 .OrderBy(c => c.Date).GroupBy(c=>c.Date)
-                 .Select(c => new { date = c.Key,feedData= c.GroupBy(x=>x.CowId)
-                 .Select(x=>new {cowId=x.Key,foodUnit= x.Sum(c=>c.Quantity),Price=x.Sum(x=>x.UnitPrice*x.Quantity)})})
+                .OrderByDescending(c => c.Date.Day).ThenByDescending(c => c.Date.Month) //.OrderByDescending(c=>c.Date.Date).ThenByDescending(c=>c.Date.Month).ThenByDescending(c => c.Date.Year)
+                .GroupBy(c => c.Date)
+                 .Select(c => new
+                 { 
+                     date = c.Key,
+                     feedData = c.GroupBy(x => x.CowId)
+                 .Select(x => new { cowId = x.Key, foodUnit = x.Sum(c => c.Quantity), Price = x.Sum(x => x.UnitPrice * x.Quantity) })
+                 })
                  .ToListAsync();
-               
-           var feedCostList= new List<FeddingCostReportVM>();
+          
+            var feedCostList= new List<FeddingCostReportVM>();
 
             foreach (var feed in feedingData)
             {
@@ -112,7 +118,7 @@ namespace Firm.Service.Services.Report_Services
                         Day = feed.date.ToString("dd MMM yy"),
                         TagNo = cow.TagId,
                         Consumption = data.Price,
-                        FoodUnit= data.foodUnit
+                        FoodUnit = data.foodUnit
 
                     };
                     feedCostList.Add(feedObject);
@@ -126,8 +132,8 @@ namespace Firm.Service.Services.Report_Services
             feedingCostReport.TottalCow = feedCostList.DistinctBy(c => c.TagNo).Count();
             feedingCostReport.TottalConsumption= feedCostList.Sum(c=>c.Consumption);
             feedingCostReport.TottalFoodUnit= feedCostList.Sum(c=>c.FoodUnit);
-            feedingCostReport.FeddingCostList.OrderBy(c => c.Day).ToList();
-
+           
+            feedingCostReport.FeddingCostList= feedCostList;
             return feedingCostReport;
         }
 

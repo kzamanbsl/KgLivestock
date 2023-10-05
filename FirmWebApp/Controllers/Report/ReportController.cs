@@ -58,8 +58,8 @@ namespace FirmWebApp.Controllers.Report
             feedModel.StartDate = DateTime.Now.AddDays(-7);
             feedModel.EndDate = DateTime.Now;
             feedModel = await _reportService.FeddingCostReport(feedModel);
-            feedModel.StartDate = DateTime.Now.AddDays(-7);
-            feedModel.EndDate = DateTime.Now;
+            //feedModel.StartDate = DateTime.Now.AddDays(-7);
+            //feedModel.EndDate = DateTime.Now;
 
             return View("Views/FeedReport/Index.cshtml",feedModel);
         }

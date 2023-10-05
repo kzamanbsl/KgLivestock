@@ -67,7 +67,7 @@ namespace Firm.Service.Services.Milk_Services
         public async Task<List<MilkServiceViewModel>> GetAll()
         {
             List<MilkServiceViewModel> lists = new List<MilkServiceViewModel>();
-            var data = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(x => x.IsActive == true && x.Date.Date>=DateTime.Now.Date.AddDays(-1))
+            var data = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(x => x.IsActive == true && x.Date.Date >= DateTime.Now.Date.AddDays(-15))
                 .GroupBy(c => c.Date).Select(c => new
                 {
                     date = c.Key,
@@ -103,6 +103,7 @@ namespace Firm.Service.Services.Milk_Services
             }
             return lists;
         }
+
 
         public async Task<MilkServiceViewModel> GetById(long id)
         {

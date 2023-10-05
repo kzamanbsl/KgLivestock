@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
+    int sl = 1;
 }
 @model Vaccine_Treatment_ReportVM
 
@@ -66,6 +66,7 @@
         <table id="example" class="display w-100 text-center table border mt-3" cellspacing="0">
             <thead>
                 <tr>
+                    <th>SN</th>
                     <th>Date</th>
                     <th>Tag Number</th>
                     <th>Expense For</th>
@@ -81,6 +82,7 @@
                     @foreach (var cow in Model.VTReportVM)
                     {
                         <tr>
+                            <td>@sl</td>
                             <td>@cow.Day</td>
                             <td>@cow.TagId</td>
                             <td>@cow.CostingType</td>
@@ -89,6 +91,7 @@
                             <td>@cow.Price.ToString("F2")</td>
 
                         </tr>
+                        sl++;
                     }
 
                 }
@@ -119,7 +122,9 @@
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
         $('#VTreatmentReport').addClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable({
+            order: [[0, 'desc']]
+        });
 
     });
 </script>

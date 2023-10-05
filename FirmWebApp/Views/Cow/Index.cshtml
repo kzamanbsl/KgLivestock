@@ -33,7 +33,8 @@
                         <th>Tag No.</th>
                         <th>Breed</th>
                         <th>Price</th>
-                        <th>Shed</th>
+                        <th>Shed</th>    
+                        <th>Line</th>
                         @*    <th>Age (Months) </th>*@
                         <th>Gender</th>
                         <th>Report</th>
@@ -55,6 +56,7 @@
                             <td>@cow.BreedName</td>
                             <td>@cow.Price</td>
                             <td>@cow.ShedNo</td>
+                            <td>@cow.LineNo</td>
                             <td>@cow.CalfGender</td>
                             <td>
                                
@@ -149,7 +151,7 @@
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
                                                             <label asp-for="@cow.LineNo" class="control-label">Line No. (সারি নম্বর)</label>
-                                                            <input asp-for="@cow.LineNo" class="form-control" id="cow-weight" readonly placeholder="No of Row">
+                                                            <input asp-for="@cow.LineNo" class="form-control" id="cow-weight" readonly placeholder="No of Line">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12 col-lg-6">

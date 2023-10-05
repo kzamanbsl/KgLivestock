@@ -8,6 +8,7 @@ builder.Services.ConfigureApplicationCookie(
                                options.AccessDeniedPath = new PathString("/User_Login/AccessDenied");
                                options.LogoutPath = new PathString("/User_Login/Logout");
                            });
+
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
     options.CheckConsentNeeded = context => true;
