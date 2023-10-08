@@ -13,8 +13,8 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         public DateTime Date { get; set; }
         public long FeedCategoryId { get; set; }
         public string FeedCategoryName { get; set; }
-        public int ShadeNo { get; set; }
-        public int LineNo { get; set; }
+        public string? ShadeNo { get; set; }
+        public string? LineNo { get; set; }
         public decimal Quantity { get; set; }
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
 

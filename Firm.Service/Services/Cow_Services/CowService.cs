@@ -87,6 +87,7 @@ namespace Firm.Service.Services.Cow_Services
                 model.Color = cow.Color;
                 model.ShedNo = cow.ShedNo;
                 model.LineNo = cow.LineNo;
+                model.Status = cow.Status??0;
 
                 model.LivestockTypeVal = cow.LivestockTypeVal;
 
@@ -367,6 +368,37 @@ namespace Firm.Service.Services.Cow_Services
             model.TotalFeedingCost = last30DaysFeed.Sum(c=>c.Quantity*c.UnitPrice);
 
             return model;
+        }
+
+        public bool ChangeStatus(long Cowid, int EnumValue)
+        {
+            var cowUpdatedata = context.Cows.Where(x => x.Id == Cowid).FirstOrDefault();
+
+            cowUpdatedata.Status = (Status)EnumValue;
+
+            //if (EnumValue == 1 | EnumValue == 3)
+            //{
+            //    cowUpdatedata.IsActive = true;
+            //}
+            //else if (EnumValue == 2 | EnumValue == 4)
+            //{
+            //    cowUpdatedata.IsActive = false;
+            //}
+
+            try
+            {
+                context.Entry(cowUpdatedata).State = EntityState.Modified;
+
+                context.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
+
+
         }
     }
 }

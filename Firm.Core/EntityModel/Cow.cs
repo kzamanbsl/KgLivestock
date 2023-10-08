@@ -26,6 +26,7 @@ namespace Firm.Core.EntityModel
         public Gender? CalfGender { get; set; }
         public string ShedNo { get; set; }
         public string LineNo { get; set; }
+        public Status? Status { get; set; }
         public LivestockType? LivestockTypeVal { get; set; }
     }
 }
