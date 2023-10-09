@@ -134,16 +134,16 @@
                     @foreach (var list in Model.feedConsumptionList)
                     {
                         <tr>
-
+                           
 
                             <td>@(i + 1)</td>
                             <td>
 
-                                <input type="hidden" class="text-center" asp-for="feedConsumptionList[i].ShadeNo" value="@list.ShadeNo" />@list.ShadeNo
+                                <input type="hidden" class="text-center" asp-for="feedConsumptionList[i].ShadeNo" value="@(list.ShadeNo??null)" />@(list.ShadeNo.ToString()??null)
                             </td>
                             <td>
 
-                                <input type="hidden" class="text-center" asp-for="feedConsumptionList[i].LineNo" value="@list.LineNo" />@list.LineNo
+                                <input type="hidden" class="text-center" asp-for="feedConsumptionList[i].LineNo" value="@(list.LineNo??null)" />  @(list.LineNo)
                             </td>
 
                             <td><input value="" class="text-center" asp-for="feedConsumptionList[i].Quantity" /> Kg</td>

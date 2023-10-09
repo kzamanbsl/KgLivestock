@@ -23,6 +23,12 @@
     <div class="card-header">
         <h5 class="card-title">Cow Information</h5>
     </div>
+    @if (!string.IsNullOrEmpty(ViewData["StatusMessage"] as string))
+                    {
+                        <div class="alert alert-warning">
+            @ViewData["StatusMessage"]
+                        </div>
+                    }
     <div class="card-body">
         <div class="table-responsive-sm">
             <table id="cowtable" class="table  table-bordered table-hover">
@@ -38,6 +44,7 @@
                         @*    <th>Age (Months) </th>*@
                         <th>Gender</th>
                         <th>Report</th>
+                        <th>Status</th>
                         <th>Action</th>
                         <th>Details</th>
                     </tr>
@@ -58,11 +65,23 @@
                             <td>@cow.ShedNo</td>
                             <td>@cow.LineNo</td>
                             <td>@cow.CalfGender</td>
+                           
                             <td>
                                
                                 <a href="/Cow/CowSummary/@cow.Id" target="_blank">Report</a>
 @*                                @Html.ActionLink("Report", "CowSummary", new { id = cow.Id }, new { onclick = "return confirm('Are you sure you want to generate report?')" })
 *@                            
+                            </td>
+                            <td class="statusRow" value="@cow.Id">
+
+                                <select style="border:none" asp-for="@cow.Status" value="@cow.Status"  asp-items="Html.GetEnumSelectList<Status>()"
+                                        class="StatusSelect">
+
+                                  <option value="0">Select</option>
+
+                                </select>
+
+                               
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = cow.Id })  | 
@@ -220,6 +239,37 @@
             });
 
         });
+
+
+
+        $(".StatusSelect").change(function () {
+
+            var Selectvalue = $(this).val();
+            isLoading = true;
+
+            var cowid =  $(this).closest(".statusRow").attr("value");
+
+            $.ajax({
+
+                url: "/Cow/ChangeStatus",
+                type: "POST",
+                data: {
+                    Cowid: cowid,
+                    EnumValue: Selectvalue
+                },
+                cache: false,
+                success: function (data) {
+
+                    isLoading = false;
+                }
+
+            });
+
+
+
+        });
+
+
     </script>
   }
 

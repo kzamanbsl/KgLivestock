@@ -15,5 +15,6 @@ namespace Firm.Service.Services.Cow_Services
         Task<bool> Remove(long id);
         Task<CowServiceViewModel> GetCowHistoryById(long id);
         Task<CowSummaryVM> CowSummary30Days();
+       bool  ChangeStatus(long Cowid, int EnumValue);
     }
 }

@@ -112,8 +112,8 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
                             foreach (var liveStock in model.feedConsumptionList)
                             {
 
-                                var cowList = await context.Cows.AsQueryable().AsNoTracking().Where(c => c.IsActive==true &&c.ShedNo.Equals(liveStock.ShadeNo.ToString())
-                                                                   && c.LineNo.Equals(liveStock.LineNo.ToString())).ToListAsync();
+                                var cowList = await context.Cows.AsQueryable().AsNoTracking().Where(c => c.IsActive==true &&c.ShedNo.Equals(liveStock.ShadeNo)
+                                                                   && c.LineNo.Equals(liveStock.LineNo)).ToListAsync();
 
                                 decimal UnitPerLiveStock = liveStock.Quantity/ cowList.Count();
 
@@ -246,15 +246,15 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
             var shadeList =await  context.Cows.AsQueryable().AsNoTracking()
                          .Where(c => c.IsActive == true).OrderBy(c => c.ShedNo)
                          .Select(c => new { shade = c.ShedNo, Line = c.LineNo, }).Distinct()
-                         .OrderBy(c=>c.Line).ToListAsync();
+                         .ToListAsync();
 
            var modelList=new List<FeedConsumptionBulkServiceVM>();
             foreach(var shade in shadeList)
             {
                 var model= new FeedConsumptionBulkServiceVM()
                 {
-                    ShadeNo=Convert.ToInt16(shade.shade),
-                    LineNo=Convert.ToInt16(shade.Line)
+                    ShadeNo=shade.shade,
+                    LineNo=shade.Line
 
                 };
 
