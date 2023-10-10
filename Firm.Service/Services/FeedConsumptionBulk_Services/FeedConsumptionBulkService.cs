@@ -113,7 +113,8 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
                             {
 
                                 var cowList = await context.Cows.AsQueryable().AsNoTracking().Where(c => c.IsActive==true &&c.ShedNo.Equals(liveStock.ShadeNo)
-                                                                   && c.LineNo.Equals(liveStock.LineNo)).ToListAsync();
+                                                                   && c.LineNo.Equals(liveStock.LineNo)&&(c.Status==Status.Live|| c.Status == null ||
+                                                                         c.Status.Value == 0)).ToListAsync();
 
                                 decimal UnitPerLiveStock = liveStock.Quantity/ cowList.Count();
 
