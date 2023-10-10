@@ -21,7 +21,8 @@ namespace Firm.Service.Services.Cow_Services
         }
         public async Task<CowServiceViewModel> AddNewCow(CowServiceViewModel model)
         {
-            bool isTagIdExists = await context.Cows.AnyAsync(c => c.TagId == model.TagId);
+            bool isTagIdExists = await context.Cows.AnyAsync(c => c.TagId == model.TagId && c.IsActive==true && 
+                                    (c.Status == Status.Live || c.Status.Value == 0|| c.Status.Value == null));
             if (isTagIdExists)
             {
                 model.ErrorMessage = "TagId already exists. Please choose a unique TagId.";
@@ -45,6 +46,7 @@ namespace Firm.Service.Services.Cow_Services
                 cow.ShedNo = model.ShedNo;
                 cow.LineNo = model.LineNo;
                 cow.LivestockTypeVal = model.LivestockTypeVal;
+                cow.Status = model.Status??0;
                 cow.CreatedOn = DateTime.Now;
                 context.Cows.Add(cow);
                 var res = await context.SaveChangesAsync();

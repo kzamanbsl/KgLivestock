@@ -243,6 +243,7 @@ namespace Firm.Service.Services.Milk_Services
             var cowList = await context.Cows.AsQueryable().AsNoTracking()
 
                 .Where(c => c.IsActive == true && c.LivestockTypeVal == (LivestockType)2
+                && (c.Status == Status.Live || c.Status.Value == 0 || c.Status.Value == null)
                 && c.ShedNo.Equals(model.ShadeNo))
 
                 .Select(c => new { cowId = c.Id, tagId = c.TagId }).OrderBy(c => c.tagId).ToListAsync();
