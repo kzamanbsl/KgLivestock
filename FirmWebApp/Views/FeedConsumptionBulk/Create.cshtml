@@ -46,7 +46,7 @@
                         </div>
                     }
                     <div class="row mx-2">
-                        <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="col-md-5 col-sm-12 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="Date" class="control-label"> Date</label>
                                 @if (Model == null)
@@ -61,7 +61,7 @@
                                 }
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-12 col-lg-6">
+                        <div class="col-md-5 col-sm-12 col-lg-5">
                             <div class="form-group">
                                 <label asp-for="FeedCategoryId" class="control-label">Feed Category</label>
                                 <select asp-for="FeedCategoryId" class="form-control" asp-items="ViewBag.feedCategoryList">
@@ -90,13 +90,13 @@
                         <input asp-for="Quantity" class="form-control" placeholder="Quantity">
                         </div>
                         </div>*@
-                    </div>
-                    <div class="row mx-2 float-right">
+
+                        <div class="col-md-2 col-sm-12 col-lg-2  " style="margin-top:30px">
                         <div class="form-group col-sm-4">
-                            <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary float-end ml-3">Search</button>
                         </div>
                     </div>
-
+                    </div>
 
                 </form>
             </div>

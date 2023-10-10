@@ -244,13 +244,15 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         public async Task<List<FeedConsumptionBulkServiceVM>> ShadeLineFeedList()
         {
             var shadeList =await  context.Cows.AsQueryable().AsNoTracking()
-                         .Where(c => c.IsActive == true).OrderBy(c => c.ShedNo)
+                         .Where(c => c.IsActive == true && (c.Status == Status.Live|| c.Status ==null|| c.Status.Value == 0)).OrderBy(c => c.ShedNo)
                          .Select(c => new { shade = c.ShedNo, Line = c.LineNo, }).Distinct()
                          .ToListAsync();
 
            var modelList=new List<FeedConsumptionBulkServiceVM>();
             foreach(var shade in shadeList)
             {
+
+
                 var model= new FeedConsumptionBulkServiceVM()
                 {
                     ShadeNo=shade.shade,

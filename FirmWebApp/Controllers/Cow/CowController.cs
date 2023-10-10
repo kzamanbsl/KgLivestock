@@ -24,7 +24,7 @@ namespace FirmWebApp.Controllers.Cow
             ViewBag.Status = new SelectList((statusList).Select(s => new { Id = s.Id, status = s.Status }), "Id", "status");
             var data = await cowService.GetAll();
 
-            ViewData["StatusMessage"] = TempData["Message"] as string;
+            ViewBag.StatusMessage = "success";
             return View(data);
         }
         public async Task<IActionResult> Create()

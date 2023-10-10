@@ -23,12 +23,11 @@
     <div class="card-header">
         <h5 class="card-title">Cow Information</h5>
     </div>
-    @if (!string.IsNullOrEmpty(ViewData["StatusMessage"] as string))
-                    {
-                        <div class="alert alert-warning">
-            @ViewData["StatusMessage"]
+
+    <div id="message">
+              
                         </div>
-                    }
+
     <div class="card-body">
         <div class="table-responsive-sm">
             <table id="cowtable" class="table  table-bordered table-hover">
@@ -238,16 +237,17 @@
                 order: [[0, 'desc']],
             });
 
+            $("#message").hide();
         });
-
-
+      
 
         $(".StatusSelect").change(function () {
-
+           
             var Selectvalue = $(this).val();
-            isLoading = true;
+            window.scrollTo(0, 0);
 
             var cowid =  $(this).closest(".statusRow").attr("value");
+     
 
             $.ajax({
 
@@ -259,8 +259,12 @@
                 },
                 cache: false,
                 success: function (data) {
-
-                    isLoading = false;
+          
+                    $("#message").addClass("alert alert-warning");
+                    $("#message").text("Successfully Status Updated");
+                    $("#message").show();
+                      $("#message").hide(3800);
+                   
                 }
 
             });
