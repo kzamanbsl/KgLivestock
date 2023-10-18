@@ -41,9 +41,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseHttpsRedirection();
 //app.UseCors("_myAllowSpecificOrigins");
 app.UseSession();
 app.UseRouting();
