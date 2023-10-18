@@ -1,4 +1,7 @@
 using Firm.Infrastructure;
+using Firm.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureApplicationCookie(
@@ -8,6 +11,8 @@ builder.Services.ConfigureApplicationCookie(
                                options.AccessDeniedPath = new PathString("/User_Login/AccessDenied");
                                options.LogoutPath = new PathString("/User_Login/Logout");
                            });
+
+//builder.Services.AddDbContext<FirmDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("constring")));
 
 builder.Services.Configure<CookiePolicyOptions>(options =>
 {
