@@ -332,10 +332,11 @@ namespace Firm.Service.Services.Cow_Services
                  }).ToListAsync();
 
             var today=DateTime.Now;
-            var yesterday=today.AddDays(-1);
+            var yesterday=today.AddDays(-1).Date;
+         
             var last30Days=today.AddDays(-30);
             var yesterDayTotalMilk = await context.MilkMonitors.AsQueryable().AsNoTracking().Where(c => c.IsActive == true)
-                          .Where(c => c.Date == yesterday).Select(c => c.TotalMilk).ToListAsync();
+                          .Where(c => c.Date >= yesterday&& c.Date<today.Date).Select(c => c.TotalMilk).ToListAsync();
             var last30DaysMilk= await context.MilkMonitors.AsNoTracking().Where(c => c.IsActive == true)
                            .Where(c=>c.Date>= last30Days&&c.Date<=today).Select(c=>c.TotalMilk).ToListAsync();
             last30DaysMilk.Sum();
@@ -364,7 +365,7 @@ namespace Firm.Service.Services.Cow_Services
 
             }
 
-            model.TotalMilkProduced = yesterDayTotalMilk.Sum();
+            model.YesterdayTotalMilk = yesterDayTotalMilk.Sum();
             model.TotalMilkProduced=last30DaysMilk.Sum();
             model.TotalTreatmentCost = last30DaysTreatment.Sum() + last30DaysVaccine.Sum()??0;
             model.TotalFeedingCost = last30DaysFeed.Sum(c=>c.Quantity*c.UnitPrice);
