@@ -167,7 +167,7 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         public async Task<List<FeedConsumptionBulkServiceVM>> GetAll()
         {
             List<FeedConsumptionBulkServiceVM> lists = new List<FeedConsumptionBulkServiceVM>();
-            var data = await context.FeedConsumptionBulks.Where(x => x.IsActive && x.Date.Date>=DateTime.Now.Date.AddDays(-3)).ToListAsync();
+            var data = await context.FeedConsumptionBulks.Where(x => x.IsActive && x.Date.Date>=DateTime.Now.Date.AddMonths(-2)).OrderByDescending(C=>C.Date).ToListAsync();
             foreach (var feedConsumptionBulk in data)
             {
                 FeedConsumptionBulkServiceVM model = new FeedConsumptionBulkServiceVM();
@@ -252,10 +252,14 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
            var modelList=new List<FeedConsumptionBulkServiceVM>();
             foreach(var shade in shadeList)
             {
-
+                if (shade.shade == null)
+                {
+                    continue;
+                }
 
                 var model= new FeedConsumptionBulkServiceVM()
                 {
+                  
                     ShadeNo=shade.shade,
                     LineNo=shade.Line
 

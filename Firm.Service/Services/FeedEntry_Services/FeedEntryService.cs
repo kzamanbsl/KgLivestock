@@ -121,7 +121,7 @@ namespace Firm.Service.Services.FeedEntry_Services
         public async Task<List<FeedEntryServiceVM>> GetAll()
         {
             List<FeedEntryServiceVM> lists = new List<FeedEntryServiceVM>();
-            var data = await context.FeedEntries.Where(x => x.IsActive && x.Date.Date>=DateTime.Now.Date.AddDays(-7)).ToListAsync();
+            var data = await context.FeedEntries.Where(x => x.IsActive && x.Date.Date>=DateTime.Now.Date.AddMonths(-2)).ToListAsync();
             foreach (var feedEntry in data)
             {
                 FeedEntryServiceVM model = new FeedEntryServiceVM();
