@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/FirmWebApp/wwwroot/KGFiles/firm 1 - Copy.jpg
+/.gitignore
