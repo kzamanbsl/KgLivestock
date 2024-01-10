@@ -12,6 +12,7 @@ namespace Firm.Service.Services.FeedConsumptionBulk_Services
         Task<List<FeedConsumptionBulkServiceVM>> GetAll();
         Task<FeedConsumptionBulkServiceVM> GetById(long id);
         Task<FeedConsumptionBulkServiceVM> UpdateFeedConsumptionBulk(FeedConsumptionBulkServiceVM model);
+        Task<List<FeedConsumptionBulkServiceVM>> ShadeLineFeedList();
         Task<bool> Remove(long id);
     }
 }

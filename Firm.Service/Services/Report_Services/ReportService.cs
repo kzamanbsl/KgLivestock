@@ -1,12 +1,12 @@
 ﻿using Firm.Infrastructure.Data;
-using Firm.Service.Services.FeedConsumptionCowWise_Services;
-using Firm.Service.Services.Report_Services.MilkReport_Services;
+using Firm.Service.Services.Report_Services.ReportViewModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Firm.Utility.Miscellaneous.Enum;
 
 namespace Firm.Service.Services.Report_Services
 {
@@ -91,15 +91,21 @@ namespace Firm.Service.Services.Report_Services
             return trObject;
         }
         public async Task<FeddingCostReportVM> FeddingCostReport(FeddingCostReportVM FeddingReport)
-        {
+        { 
+            
             var feedingData = await  _context.FeedConsumptionCowWises.AsQueryable().AsNoTracking()
                  .Where(c => c.IsActive == true & (c.Date >= FeddingReport.StartDate && c.Date <= FeddingReport.EndDate))
-                 .OrderBy(c => c.Date).GroupBy(c=>c.Date)
-                 .Select(c => new { date = c.Key,feedData= c.GroupBy(x=>x.CowId)
-                 .Select(x=>new {cowId=x.Key,foodUnit= x.Sum(c=>c.Quantity),Price=x.Sum(x=>x.UnitPrice*x.Quantity)})})
+                .OrderByDescending(c => c.Date.Day).ThenByDescending(c => c.Date.Month) //.OrderByDescending(c=>c.Date.Date).ThenByDescending(c=>c.Date.Month).ThenByDescending(c => c.Date.Year)
+                .GroupBy(c => c.Date)
+                 .Select(c => new
+                 { 
+                     date = c.Key,
+                     feedData = c.GroupBy(x => x.CowId)
+                 .Select(x => new { cowId = x.Key, foodUnit = x.Sum(c => c.Quantity), Price = x.Sum(x => x.UnitPrice * x.Quantity) })
+                 })
                  .ToListAsync();
-               
-           var feedCostList= new List<FeddingCostReportVM>();
+          
+            var feedCostList= new List<FeddingCostReportVM>();
 
             foreach (var feed in feedingData)
             {
@@ -112,7 +118,7 @@ namespace Firm.Service.Services.Report_Services
                         Day = feed.date.ToString("dd MMM yy"),
                         TagNo = cow.TagId,
                         Consumption = data.Price,
-                        FoodUnit= data.foodUnit
+                        FoodUnit = data.foodUnit
 
                     };
                     feedCostList.Add(feedObject);
@@ -126,13 +132,171 @@ namespace Firm.Service.Services.Report_Services
             feedingCostReport.TottalCow = feedCostList.DistinctBy(c => c.TagNo).Count();
             feedingCostReport.TottalConsumption= feedCostList.Sum(c=>c.Consumption);
             feedingCostReport.TottalFoodUnit= feedCostList.Sum(c=>c.FoodUnit);
-            feedingCostReport.FeddingCostList.OrderBy(c => c.Day).ToList();
-
+           
+            feedingCostReport.FeddingCostList= feedCostList;
             return feedingCostReport;
         }
 
 
 
+        public async Task<MilkReportVM> MilkReport(MilkReportVM milkReport)
+        {
+
+            var milkData = await _context.MilkMonitors.AsQueryable().AsNoTracking()
+                .Where(c => c.IsActive == true && (c.Date >= milkReport.StartDate && c.Date <= milkReport.EndDate))
+                .OrderBy(c => c.Date)
+                .GroupBy(c => c.Date)
+                .Select(DateData => new
+                {
+                    date = DateData.Key,
+                    cowData = DateData
+                    .GroupBy(c => c.CowId)
+                    .Select(cow => new { cowId = cow.Key, tottalMilk = cow.Sum(c => c.TotalMilk) })
+                }).ToListAsync();
+
+            var model = new List<MilkReportVM>();
+            foreach (var milk in milkData)
+            {
+                foreach (var cow in milk.cowData)
+                {
+
+
+                    if (cow is null | cow.tottalMilk == (0 | null))
+                    {
+                        continue;
+                    }
+                    var MilkReport = new MilkReportVM();
+                    MilkReport.Day = milk.date.ToString("dd MMM yy");
+                    MilkReport.CowTagId = await _context.Cows.AsNoTracking().Where(c => c.Id == cow.cowId).Select(c => c.TagId).FirstOrDefaultAsync();
+                    MilkReport.TotalMilk = cow.tottalMilk;
+
+
+                    model.Add(MilkReport);
+                }
+
+
+            }
+            var milkReportObject = new MilkReportVM();
+            milkReportObject.StartDate = milkReport.StartDate;
+            milkReportObject.EndDate = milkReport.EndDate;
+            milkReportObject.ListMilkReportVM = model;
+            milkReportObject.TotalCowMilk = milkReportObject.ListMilkReportVM.Sum(c => c.TotalMilk);
+            milkReportObject.TotalCow = model.DistinctBy(c => c.CowTagId).Count();
+            milkReportObject.tottalDay = model.DistinctBy(c => c.Day).Count();
+            return milkReportObject;
+        }
+        public async Task<IndividualCowReportVM> IndividualCowSummary(IndividualCowReportVM individualCow)
+        {
+            var TotalCost = await _context.Cows.AsQueryable().AsNoTracking()
+               .Where(c => c.IsActive == true && c.TagId.Equals(individualCow.TagId.ToString())).Select(c => new
+               {
+                   tagId = c.TagId,
+                   cowId= c.Id,
+                   cowBuy = c.Price,
+                   firstWeight = c.Weight,
+                   liveStockType=c.LivestockTypeVal,
+                   vaccineCost = _context.Vaccines.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                   .Sum(v => v.Price),
+                   tratmentCost = _context.Treatments.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                   .Sum(v => v.Price),
+                   feedingCost = _context.FeedConsumptionCowWises.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                   .Sum(c => c.Quantity * c.UnitPrice),
+               }).ToListAsync();
+
+          
+
+
+            var individualCowCost = new IndividualCowReportVM();
+            foreach (var cow in TotalCost)
+            {
+                decimal totalMilk = 0;
+                if (cow.liveStockType== LivestockType.Cow)
+                {
+                     totalMilk = _context.MilkMonitors.AsQueryable().AsNoTracking()
+                                       .Where(c => c.CowId == cow.cowId && c.IsActive == true).Select(c => c.TotalMilk)
+                                       .ToList().Sum();
+                }
+                individualCowCost.LivestockType = (LivestockType)cow.liveStockType;
+                individualCowCost.TotalMilkEarn = totalMilk ;
+                individualCowCost.BuyCost = cow.cowBuy;
+                individualCowCost.TotalVacCost = cow.vaccineCost;
+                individualCowCost.TotalTreatment = cow.tratmentCost;
+                individualCowCost.TotalFeedCost = cow.feedingCost;
+                individualCowCost.Weight = individualCow.Weight;
+                individualCowCost.CurrentMeatPrice = individualCow.CurrentMeatPrice;
+                individualCowCost.CowPrice = (individualCow.Weight + Convert.ToDecimal(cow.firstWeight)) * individualCow.CurrentMeatPrice;
+                individualCowCost.TotalCowCost = Convert.ToDecimal(cow.cowBuy) + cow.vaccineCost + cow.tratmentCost + cow.feedingCost;
+
+            }
+
+            return individualCowCost;
+        }
+        public async Task<CowCostTotalVM> CowCost()
+        {
+            //var vaccineCost= await  _dBContext.Vaccines.AsQueryable().AsNoTracking()
+            //                 .Where(c=>c.IsActive==true).GroupBy(c=>c.CowId)
+            //                 .Select(c=> new {cowId= c.Key,vaccinecost=c.Sum(c=>c.Price)})
+            //                 .ToListAsync();   
+
+            //var tratmentCost= await  _dBContext.Treatments.AsQueryable().AsNoTracking()
+            //                 .Where(c=>c.IsActive==true).GroupBy(c=>c.CowId)
+            //                 .Select(c=> new {cowId= c.Key,treatmentecost=c.Sum(c=>c.Price)})
+            //                 .ToListAsync();
+
+            //var feedingCost= await  _dBContext.FeedConsumptionCowWises.AsQueryable().AsNoTracking()
+            //                 .Where(c=>c.IsActive==true).GroupBy(c=>c.CowId)
+            //                 .Select(c=> new {cowId= c.Key,treatmentecost=c.Sum(c=>c.Quantity*c.UnitPrice)})
+            //                 .ToListAsync();    
+
+
+            //var cowBuyCost= await  _dBContext.Cows.AsQueryable().AsNoTracking()
+            //                 .Where(c=>c.IsActive==true)
+            //                 .Select(c=> new { price = c.Price, id = c.Id }).ToListAsync();
+
+            var TotalCost = await _context.Cows.AsQueryable().AsNoTracking()
+                           .Where(c => c.IsActive == true).Select(c => new
+                           {
+                               tagId = c.TagId,
+                               cowBuy = c.Price,
+                               vaccineCost = _context.Vaccines.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                               .Sum(v => v.Price),
+                               tratmentCost = _context.Treatments.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                               .Sum(v => v.Price),
+                               feedingCost = _context.FeedConsumptionCowWises.AsNoTracking().Where(x => x.IsActive == true && x.CowId == c.Id)
+                               .Sum(c => c.Quantity * c.UnitPrice),
+                           }).ToListAsync();
+
+
+            var CowCostList = new List<CowCostTotalVM>();
+            foreach (var cost in TotalCost)
+            {
+                var CowCost = new CowCostTotalVM()
+                {
+                    TagNo = cost.tagId,
+                    VacCost = cost.vaccineCost,
+                    FeedCost = cost.feedingCost,
+                    Treatment = cost.tratmentCost,
+                    BuyCost = cost.cowBuy,
+                    perCowCosting = Convert.ToDecimal(Convert.ToDecimal(cost.vaccineCost)
+                                   + Convert.ToDecimal(cost.feedingCost) +
+                                   Convert.ToDecimal(cost.tratmentCost) +
+                                    Convert.ToDecimal(cost.cowBuy))
+
+                };
+
+                CowCostList.Add(CowCost);
+            }
+            var cowcost = new CowCostTotalVM();
+            cowcost.CowCostList = CowCostList;
+            cowcost.TotalVacCost = CowCostList.Sum(c => c.VacCost);
+            cowcost.TotalTreatment = CowCostList.Sum(c => c.Treatment);
+            cowcost.TotalFeedCost = CowCostList.Sum(c => c.FeedCost);
+            cowcost.Cow = CowCostList.DistinctBy(c => c.TagNo).Count();
+            cowcost.TotalCowCost = CowCostList.Sum(c => c.perCowCosting);
+            cowcost.CowBuying = Convert.ToDecimal(CowCostList.Sum(c => c.BuyCost));
+
+            return cowcost;
+        }
 
     }
 }

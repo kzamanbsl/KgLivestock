@@ -1,4 +1,4 @@
-﻿@model Vaccine_Treatment_ReportVM
+﻿@model CowCostTotalVM
 
 
 <!DOCTYPE html>
@@ -80,12 +80,14 @@
         }
 
     .print-link {
-        float: right;
+ 
+        margin-left: 100px;
+
     }
 </style>
 <body>
-    <div class="print-link">
-        <a href="javascript:window.print()">Click to Print</a>
+    <div class="float-end">
+        <a onclick="print()"><i class="fa fa-print"></i> Print</a>
     </div>
     <div class="container row">
         <div class="company-info ">
@@ -108,16 +110,17 @@
             <table id="example" class="table table-sm table-striped">
                 <thead>
 
-                    <h4 class="print-tr  text-center text-bold"> Vaccine & Treatment Report </h4>
+                    <h4 class="print-tr  text-center text-bold"> Cow Total Cost Report </h4>
 
 
                     <tr>
-                        <th>Date</th>
                         <th>Tag ID</th>
-                        <th>Costing Type</th>
-                        <th>Treatment For</th>
-                        <th>Doctor Name</th>
-                        <th>Price</th>
+                        <th>Vaccine Cost</th>
+                        <th>Treatment Cost</th>
+                        <th>Feed Cost</th>
+                        <th>Buying Cost</th>
+                        <th>Total Cost</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -125,15 +128,15 @@
                     @if (Model != null)
                     {
 
-                        @foreach (var cow in Model.VTReportVM)
+                        @foreach (var cow in Model.CowCostList)
                         {
                             <tr>
-                                <td>@cow.Day</td>
-                                <td>@cow.TagId</td>  
-                                <td>@cow.CostingType</td>
-                                <td>@cow.TreatmentFor</td>
-                                <td>@cow.DoctorName</td>
-                                <td>@cow.Price.ToString("F2")</td>
+                                <td>@cow.TagNo</td>
+                                <td>@cow.VacCost.ToString("F2")</td>
+                                <td>@cow.Treatment.Value.ToString("F2")</td>
+                                <td>@cow.FeedCost.ToString("F2")</td>
+                                <td>@cow.BuyCost</td>
+                                <td>@cow.perCowCosting.Value.ToString("F2")</td>
                             </tr>
                         }
 
@@ -144,20 +147,19 @@
                     @if (Model != null)
                     {
                         <tr>
-                            <td>Tottal Day: @Model.TottalDay</td>
-                            <td>Tottal Cow: @Model.TottalCow</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>Tottal Cost: @Model.TottalPrice.ToString("F2")</td>
+                            
+                            <td> Total Cow: @Model.Cow</td>
+                            <td>Total Vacccine Cost: @Model.TotalVacCost.ToString("F2")</td>
+                            <td>Total Treatment Cost:@Model.TotalTreatment.Value.ToString("F2")</td>
+                            <td>Total Feed Cost:@Model.TotalFeedCost.ToString("F2")</td>
+                            <td>Total Buy Cost:@Model.CowBuying</td>
+                            <td>Total Cost: @Model.TotalCowCost.Value.ToString("F2")</td>
                         </tr>
                     }
                 </tfoot>
             </table>
         </div>
     </div>
-
-
 
     @section  Scripts{
 
@@ -186,4 +188,5 @@
 
 </body>
 </html>
+
 

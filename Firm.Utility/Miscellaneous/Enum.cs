@@ -16,7 +16,7 @@ namespace Firm.Utility.Miscellaneous
         public enum LivestockType
         {
             Ox = 1,
-            Cow= 2,
+            Cow = 2,
             Heifer = 3,
             Calf = 4
         }
@@ -25,6 +25,14 @@ namespace Firm.Utility.Miscellaneous
             Morning = 1,
             Day,
             Evening
+        }
+        public enum Status
+        {
+            Live = 1,
+            Sold = 2,
+            Missing = 3,
+            Dead = 4
+
         }
     }
 }

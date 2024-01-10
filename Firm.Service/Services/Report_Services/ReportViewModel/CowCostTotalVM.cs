@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Firm.Service.Services.Report_Services.TotalCosting
+namespace Firm.Service.Services.Report_Services.ReportViewModel
 {
-    public  class CowCostTotalVM
+    public class CowCostTotalVM
     {
 
         public DateTime StartDate { get; set; }

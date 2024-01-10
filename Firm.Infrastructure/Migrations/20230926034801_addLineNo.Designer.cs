@@ -4,6 +4,7 @@ using Firm.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Firm.Infrastructure.Migrations
 {
     [DbContext(typeof(FirmDBContext))]
-    partial class FirmDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230926034801_addLineNo")]
+    partial class addLineNo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,9 +107,6 @@ namespace Firm.Infrastructure.Migrations
 
                     b.Property<string>("ShedNo")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("TagId")
                         .HasColumnType("nvarchar(max)");
@@ -709,14 +708,14 @@ namespace Firm.Infrastructure.Migrations
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "ce59a741-139e-466e-bc3a-a528c60b270f",
+                            ConcurrencyStamp = "caaad55a-2bbe-4959-aa85-614a0a80f029",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7211",
-                            ConcurrencyStamp = "c7f52f9d-5904-4436-b87a-04023d25b71b",
+                            ConcurrencyStamp = "e2167953-3655-45c7-8767-3963f6702984",
                             Name = "Hotel",
                             NormalizedName = "HOTEL"
                         });

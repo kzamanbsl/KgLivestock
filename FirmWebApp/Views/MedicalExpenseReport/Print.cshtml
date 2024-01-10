@@ -1,4 +1,4 @@
-﻿@model MilkReportVM
+﻿@model Vaccine_Treatment_ReportVM
 
 
 <!DOCTYPE html>
@@ -16,50 +16,50 @@
     <link href="~/AdminLib/admin/css/adminlte.min.css" rel="stylesheet" />
 </head>
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
 
-        .container {
-            max-width: 75%;
-            margin: 50px auto;
-        }
+    .container {
+        max-width: 75%;
+        margin: 50px auto;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    th {
+        background-color: #f2f2f2;
+    }
 
-        tfoot {
-            font-weight: bold;
-        }
+    tfoot {
+        font-weight: bold;
+    }
 
+    #print-button {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    @@media print {
         #print-button {
-            margin-top: 20px;
-            text-align: center;
+            display: none;
         }
-
-        @@media print {
-            #print-button {
-                display: none;
-            }
     }
 
     .company-info {
         display: flex;
-        justify-content:center;
+        justify-content: center;
         align-items: center;
         margin-bottom: 3px;
     }
@@ -79,13 +79,13 @@
             line-height: 1.4;
         }
 
-    .print-link{
+    .print-link {
         float: right;
     }
-    </style>
+</style>
 <body>
     <div class="print-link">
-        <a onclick="print()">Click to Print</a>
+        <a href="javascript:window.print()"><i class="fa fa-print"></i> Print</a>
     </div>
     <div class="container row">
         <div class="company-info ">
@@ -107,69 +107,82 @@
         <div class="container">
             <table id="example" class="table table-sm table-striped">
                 <thead>
-                    
-                        <h4 class="print-tr  text-center text-bold"> Cow Milk Report </h4>
-                   
+
+                    <h4 class="print-tr  text-center text-bold"> Vaccine & Treatment Report </h4>
+
 
                     <tr>
                         <th>Date</th>
                         <th>Tag ID</th>
-                        <th>Day Milk</th>
+                        <th>Costing Type</th>
+                        <th>Treatment For</th>
+                        <th>Doctor Name</th>
+                        <th>Price</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Replace this part with your dynamic data -->
-            @if (Model != null)
-            {
+                    @if (Model != null)
+                    {
 
-                @foreach (var cow in Model.ListMilkReportVM)
-                {
+                        @foreach (var cow in Model.VTReportVM)
+                        {
                             <tr>
                                 <td>@cow.Day</td>
-                                <td>@cow.CowTagId</td>
-                                <td>@cow.TotalMilk.ToString("F2")</td>
+                                <td>@cow.TagId</td>  
+                                <td>@cow.CostingType</td>
+                                <td>@cow.TreatmentFor</td>
+                                <td>@cow.DoctorName</td>
+                                <td>@cow.Price.ToString("F2")</td>
                             </tr>
-                }
+                        }
 
-            }
+                    }
                     <!-- Repeat for each data row -->
                 </tbody>
                 <tfoot>
-            @if (Model != null)
-            {
+                    @if (Model != null)
+                    {
                         <tr>
-                            <td>Tottal Day: @Model.tottalDay</td>
-                            <td>Tottal Cow: @Model.TotalCow</td>
-                            <td>Tottal Milk: @Model.TotalCowMilk.ToString("F2") Liter</td>
+                            <td>Total Day: @Model.TottalDay</td>
+                            <td>Total Cow: @Model.TottalCow</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>Total Cost: @Model.TottalPrice.ToString("F2")</td>
                         </tr>
-            }
+                    }
                 </tfoot>
             </table>
         </div>
     </div>
+
+
+
     @section  Scripts{
-  
-<script>
-        $(document).ready(function(){
-            
-            $('.print-link').hide();
 
-            window.print();
-            $('.print-link').delay(2000).show();
-        });
-        
-       function Print(){
+        <script>
+            $(document).ready(function () {
 
-            $('.print-link').hide();
-      
-           window.print();
-            $('.print-link').delay(4000);
-            $('.print-link').show();
-        } 
- 
+                $('.print-link').hide();
+
+                window.print();
+                $('.print-link').delay(2000).show();
+            });
+
+            function Print() {
+
+                $('.print-link').hide();
+
+                window.print();
+                $('.print-link').delay(4000);
+                $('.print-link').show();
+            }
+
 
         </script>
     }
+
 
 </body>
 </html>

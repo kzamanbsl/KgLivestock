@@ -19,15 +19,19 @@ namespace FirmWebApp.Controllers.Cow
         public async Task<IActionResult> Index()
         {
             var list = await breedService.GetAll();
+            var statusList = await cowService.GetAll();
             ViewBag.breedlist = new SelectList((list).Select(s => new { Id = s.BreedId, Name = s.BreedName }), "Id", "Name");
+            ViewBag.Status = new SelectList((statusList).Select(s => new { Id = s.Id, status = s.Status }), "Id", "status");
             var data = await cowService.GetAll();
+
+            ViewBag.StatusMessage = "success";
             return View(data);
         }
         public async Task<IActionResult> Create()
         {
             var list = await breedService.GetAll();
             ViewBag.breedlist = new SelectList((list).Select(s => new { Id = s.BreedId, Name = s.BreedName }), "Id", "Name");
-           
+            
             return View();
         }
         [HttpPost]
@@ -90,6 +94,16 @@ namespace FirmWebApp.Controllers.Cow
         {
             var obj = await cowService.GetCowHistoryById(id);
             return PartialView("_CowSummary", obj);
+        }
+        
+        public async Task<IActionResult> ChangeStatus(long Cowid,int EnumValue)
+        {
+            bool isChange = cowService.ChangeStatus(Cowid, EnumValue);
+            if (isChange)
+            {
+                TempData["Message"] = "Cow Status Successfuly Updated";
+            }
+            return RedirectToAction(nameof(Index));
         }
 
 

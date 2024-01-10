@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Firm.Service.Services.Report_Services.MilkReport_Services
+namespace Firm.Service.Services.Report_Services.ReportViewModel
 {
     public class MilkReportVM
     {

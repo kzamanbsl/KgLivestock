@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Firm.Service.Services.FeedConsumptionCowWise_Services
+namespace Firm.Service.Services.Report_Services.ReportViewModel
 {
-    public  class FeddingCostReportVM
+    public class FeddingCostReportVM
     {
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
@@ -18,7 +18,7 @@ namespace Firm.Service.Services.FeedConsumptionCowWise_Services
         public decimal TottalFoodUnit { get; set; }
         public decimal Consumption { get; set; }
         public int TottalCow { get; set; }
-        [DisplayFormat(DataFormatString ="{0:N2}")]
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public decimal TottalConsumption { get; set; }
         public List<FeddingCostReportVM> FeddingCostList { get; set; }
     }

@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
+    int sl = 1;
 }
 @model MilkReportVM
 
@@ -27,8 +27,8 @@
 <section>
     <div class="container  w-75">
         <div class="mt-5 mb-2">
-            <p2>Select Milk Range</p2>
-            <form asp-controller="MilkReport" asp-action="Index" method="post">
+            <h2> Milk Report</h2>
+            <form asp-controller="Report" asp-action="MilkReport" method="post">
 
 
 
@@ -53,7 +53,7 @@
 
                     @if (Model != null)
                     {
-                        <button formtarget="_blank" formaction="/MilkReport/MilkReport" class="btn btn-secondary  form-control">Print</button>
+                        <button formtarget="_blank" formaction="/Report/MilkReportPrint" class="btn btn-secondary  form-control">Print</button>
 
                     }
 
@@ -63,9 +63,14 @@
 
             </form>
         </div>
+
+
+
+       
         <table id="example" class="display w-100 text-center table border" cellspacing="0">
             <thead>
                 <tr>
+                    <th>SN</th>
                     <th>Date</th>
                     <th>Tag Number</th>
                     <th>Day Milk</th>
@@ -78,10 +83,12 @@
                     @foreach (var cow in Model.ListMilkReportVM)
                     {
                         <tr>
+                            <td>@sl</td>
                             <td>@cow.Day</td>
                             <td>@cow.CowTagId</td>
                             <td>@cow.TotalMilk.ToString("F2")</td>
                         </tr>
+                        sl++;
                     }
 
                 }
@@ -90,9 +97,9 @@
                 @if (Model != null)
                 {
                     <tr>
-                        <td> Tottal Day: @Model.tottalDay</td>
-                        <td>Tottal Cow: @Model.TotalCow</td>
-                        <td>Tottal Milk: @Model.TotalCowMilk.ToString("F2")</td>
+                        <td> Total Day: @Model.tottalDay</td>
+                        <td>Total Cow: @Model.TotalCow</td>
+                        <td>Total Milk: @Model.TotalCowMilk.ToString("F2")</td>
                     </tr>
                 }
             </tfoot>
@@ -108,7 +115,9 @@
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
         $('#MilkReport').addClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable({
+            order: [[0, 'desc']]
+        });
 
     });
 </script>

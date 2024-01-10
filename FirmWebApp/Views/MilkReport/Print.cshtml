@@ -1,4 +1,4 @@
-﻿@model FeddingCostReportVM
+﻿@model MilkReportVM
 
 
 <!DOCTYPE html>
@@ -16,50 +16,50 @@
     <link href="~/AdminLib/admin/css/adminlte.min.css" rel="stylesheet" />
 </head>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        max-width: 75%;
-        margin: 50px auto;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-    }
-
-    th {
-        background-color: #f2f2f2;
-    }
-
-    tfoot {
-        font-weight: bold;
-    }
-
-    #print-button {
-        margin-top: 20px;
-        text-align: center;
-    }
-
-    @@media print {
-        #print-button {
-            display: none;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
+
+        .container {
+            max-width: 75%;
+            margin: 50px auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tfoot {
+            font-weight: bold;
+        }
+
+        #print-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @@media print {
+            #print-button {
+                display: none;
+            }
     }
 
     .company-info {
         display: flex;
-        justify-content: center;
+        justify-content:center;
         align-items: center;
         margin-bottom: 3px;
     }
@@ -79,13 +79,13 @@
             line-height: 1.4;
         }
 
-    .print-link {
+    .print-link{
         float: right;
     }
-</style>
+    </style>
 <body>
     <div class="print-link">
-        <a onclick="print()">Click to Print</a>
+        <a onclick="print()"><i class="fa fa-print"></i> Print</a>
     </div>
     <div class="container row">
         <div class="company-info ">
@@ -107,78 +107,70 @@
         <div class="container">
             <table id="example" class="table table-sm table-striped">
                 <thead>
-
-                    <h4 class="print-tr  text-center text-bold"> Cow Feed Consumption Report </h4>
-
+                    
+                        <h4 class="print-tr  text-center text-bold"> Cow Milk Report </h4>
+                   
 
                     <tr>
                         <th>Date</th>
-                        <th>Tag Number</th>
-                        <th>Fedding Quantity</th>
-                        <th>Consumption</th>
+                        <th>Tag ID</th>
+                        <th>Day Milk</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Replace this part with your dynamic data -->
-                    @if (Model != null)
-                    {
+            @if (Model != null)
+            {
 
-                        @foreach (var cow in Model.FeddingCostList)
-                        {
+                @foreach (var cow in Model.ListMilkReportVM)
+                {
                             <tr>
                                 <td>@cow.Day</td>
-                                <td>@cow.TagNo</td>
-
-                                <td>@cow.FoodUnit</td>
-                                <td>@cow.Consumption.ToString("F2")</td>
+                                <td>@cow.CowTagId</td>
+                                <td>@cow.TotalMilk.ToString("F2")</td>
                             </tr>
-                        }
+                }
 
-                    }
+            }
                     <!-- Repeat for each data row -->
                 </tbody>
                 <tfoot>
-                    @if (Model != null)
-                    {
+            @if (Model != null)
+            {
                         <tr>
-                            <td> Tottal Day: @Model.TottalDay</td>
-                            <td>Tottal Cow: @Model.TottalCow</td>
-                            <td>Tottal Quantity: @Model.TottalFoodUnit.ToString("F2")</td>
-                            <td>Tottal Consumption: @Model.TottalConsumption.ToString("F2")</td>
+                            <td>Total Day: @Model.tottalDay</td>
+                            <td>Total Cow: @Model.TotalCow</td>
+                            <td>Total Milk: @Model.TotalCowMilk.ToString("F2") Litre</td>
                         </tr>
-                    }
+            }
                 </tfoot>
             </table>
         </div>
     </div>
-
-
-
     @section  Scripts{
+  
+<script>
+        $(document).ready(function(){
+            
+            $('.print-link').hide();
 
-        <script>
-            $(document).ready(function () {
+            window.print();
+            $('.print-link').delay(2000).show();
+        });
+        
+       function Print(){
 
-                $('.print-link').hide();
-
-                window.print();
-                $('.print-link').delay(2000).show();
-            });
-
-            function Print() {
-
-                $('.print-link').hide();
-
-                window.print();
-                $('.print-link').delay(4000);
-                $('.print-link').show();
-            }
-
+            $('.print-link').hide();
+      
+           window.print();
+            $('.print-link').delay(4000);
+            $('.print-link').show();
+        } 
+ 
 
         </script>
     }
 
 </body>
 </html>
-
 

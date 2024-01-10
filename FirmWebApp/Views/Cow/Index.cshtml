@@ -23,6 +23,11 @@
     <div class="card-header">
         <h5 class="card-title">Cow Information</h5>
     </div>
+
+    <div id="message">
+              
+                        </div>
+
     <div class="card-body">
         <div class="table-responsive-sm">
             <table id="cowtable" class="table  table-bordered table-hover">
@@ -30,13 +35,15 @@
                     <tr>
                         <th>#</th>
                         <th>Purchase Date</th>
-                        <th>Tag</th>
+                        <th>Tag No.</th>
                         <th>Breed</th>
                         <th>Price</th>
-                        <th>Shed</th>
+                        <th>Shed</th>    
+                        <th>Line</th>
                         @*    <th>Age (Months) </th>*@
                         <th>Gender</th>
                         <th>Report</th>
+                        <th>Status</th>
                         <th>Action</th>
                         <th>Details</th>
                     </tr>
@@ -55,12 +62,25 @@
                             <td>@cow.BreedName</td>
                             <td>@cow.Price</td>
                             <td>@cow.ShedNo</td>
+                            <td>@cow.LineNo</td>
                             <td>@cow.CalfGender</td>
+                           
                             <td>
                                
                                 <a href="/Cow/CowSummary/@cow.Id" target="_blank">Report</a>
 @*                                @Html.ActionLink("Report", "CowSummary", new { id = cow.Id }, new { onclick = "return confirm('Are you sure you want to generate report?')" })
 *@                            
+                            </td>
+                            <td class="statusRow" value="@cow.Id">
+
+                                <select style="border:none" asp-for="@cow.Status" value="@cow.Status"  asp-items="Html.GetEnumSelectList<Status>()"
+                                        class="StatusSelect">
+
+                                  <option value="0">Select</option>
+
+                                </select>
+
+                               
                             </td>
                             <td>
                                 @Html.ActionLink("Edit", "Edit", new { id = cow.Id })  | 
@@ -84,7 +104,7 @@
                                                 <div class="row mx-2">
 
 
-                                                    <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
                                                             <label asp-for="@cow.PurchaseDate" class="control-label">Purchase Date (কেনার তারিখ)</label>
                                                             <input asp-for="@cow.PurchaseDate" class="form-control" placeholder="Enter purchase date" readonly>
@@ -92,7 +112,7 @@
                                                     </div>
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
-                                                            <label asp-for="@cow.Origin" class="control-label">Purchased From (কোথা থেকে কেনা)</label>
+                                                            <label asp-for="@cow.Origin" class="control-label">Purchased From(ক্রয় স্থান)</label>
                                                             <input asp-for="@cow.Origin" class="form-control" id="origin" placeholder="Enter Source" readonly>
                                                         </div>
                                                     </div>
@@ -145,6 +165,12 @@
                                                             <label asp-for="@cow.ShedNo" class="control-label">Shed No. (চালার নম্বর)</label>
                                                             <input asp-for="@cow.ShedNo" class="form-control" id="cow-weight" readonly placeholder="No of Shed">
                                                         </div>
+                                                    </div>   
+                                                    <div class="col-md-6 col-sm-12 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label asp-for="@cow.LineNo" class="control-label">Line No. (সারি নম্বর)</label>
+                                                            <input asp-for="@cow.LineNo" class="form-control" id="cow-weight" readonly placeholder="No of Line">
+                                                        </div>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
@@ -156,7 +182,7 @@
 
                                                     <div class="col-md-6 col-sm-12 col-lg-6">
                                                         <div class="form-group">
-                                                            <label asp-for="@cow.TagId" class="control-label">Tag (ট্যাগ)</label>
+                                                            <label asp-for="@cow.TagId" class="control-label">Tag No.(ট্যাগ)</label>
                                                             <input asp-for="@cow.TagId" class="form-control" placeholder="Enter Tag" readonly>
                                                         </div>
                                                     </div>
@@ -211,7 +237,43 @@
                 order: [[0, 'desc']],
             });
 
+            $("#message").hide();
         });
+      
+
+        $(".StatusSelect").change(function () {
+           
+            var Selectvalue = $(this).val();
+            window.scrollTo(0, 0);
+
+            var cowid =  $(this).closest(".statusRow").attr("value");
+     
+
+            $.ajax({
+
+                url: "/Cow/ChangeStatus",
+                type: "POST",
+                data: {
+                    Cowid: cowid,
+                    EnumValue: Selectvalue
+                },
+                cache: false,
+                success: function (data) {
+          
+                    $("#message").addClass("alert alert-warning");
+                    $("#message").text("Successfully Status Updated");
+                    $("#message").show();
+                      $("#message").hide(3800);
+                   
+                }
+
+            });
+
+
+
+        });
+
+
     </script>
   }
 

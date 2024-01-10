@@ -23,7 +23,7 @@
                     <div class="row mx-2">
 
 
-                        <div class="col-md-12 col-sm-12 col-lg-12">
+                        <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
                                 <label asp-for="PurchaseDate" class="control-label">Purchase Date (কেনার তারিখ)</label>
                                 <input asp-for="PurchaseDate" class="form-control" placeholder="Enter purchase date">
@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
-                                <label asp-for="Origin" class="control-label"> Purchased From (কোথা থেকে কেনা) </label>
+                                <label asp-for="Origin" class="control-label"> Purchased From (ক্রয় স্থান) </label>
                                 <input asp-for="Origin" class="form-control" id="origin" placeholder="Enter Source">
                             </div>
                         </div>
@@ -90,6 +90,12 @@
                         </div>
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
+                                <label asp-for="LineNo" class="control-label">Line No. (সারি নম্বর)</label>
+                                <input asp-for="LineNo" class="form-control" id="cow-weight" placeholder="No of Line">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-lg-6">
+                            <div class="form-group">
                                 <label asp-for="CowTeeth" class="control-label">Teeth (দাঁত)</label>
                                 <input asp-for="CowTeeth" class="form-control" id="cow-weight" placeholder="No of Teeth">
                             </div>
@@ -98,7 +104,7 @@
 
                         <div class="col-md-6 col-sm-12 col-lg-6">
                             <div class="form-group">
-                                <label asp-for="TagId" class="control-label">Tag (ট্যাগ)</label>
+                                <label asp-for="TagId" class="control-label">Tag No.(ট্যাগ)</label>
                                 <input asp-for="TagId" class="form-control" placeholder="Enter Tag" readonly>
                             </div>
                         </div>

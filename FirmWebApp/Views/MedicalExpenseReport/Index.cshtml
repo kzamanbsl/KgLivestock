@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
-
+    int sl = 1;
 }
 @model Vaccine_Treatment_ReportVM
 
@@ -27,8 +27,8 @@
 <section>
     <div class="container  w-75">
         <div class="mt-5 mb-2">
-            <h3>Select Milk Range</h3>
-            <form asp-controller="Vaccine_Treatment_Report" asp-action="Index" method="post">
+            <h3>Vaccine and Treatment Report</h3>
+            <form asp-controller="Report" asp-action="MedicalExpenseReport" method="post">
 
                
 
@@ -52,7 +52,7 @@
 
                     @if (Model != null)
                     {
-                        <button formtarget="_blank" formaction="/Vaccine_Treatment_Report/VTreatment_Summary" class="btn btn-secondary  form-control">Print</button>
+                        <button formtarget="_blank" formaction="/Report/MedicalExpenseSummary" class="btn btn-secondary  form-control">Print</button>
 
                     }
 
@@ -66,9 +66,10 @@
         <table id="example" class="display w-100 text-center table border mt-3" cellspacing="0">
             <thead>
                 <tr>
+                    <th>SN</th>
                     <th>Date</th>
-                    <th>Tag ID</th>
-                    <th>Costing Type</th>
+                    <th>Tag Number</th>
+                    <th>Expense For</th>
                     <th>Treatment For</th>
                     <th>Doctor Name</th>
                     <th>Price</th>
@@ -81,6 +82,7 @@
                     @foreach (var cow in Model.VTReportVM)
                     {
                         <tr>
+                            <td>@sl</td>
                             <td>@cow.Day</td>
                             <td>@cow.TagId</td>
                             <td>@cow.CostingType</td>
@@ -89,6 +91,7 @@
                             <td>@cow.Price.ToString("F2")</td>
 
                         </tr>
+                        sl++;
                     }
 
                 }
@@ -97,12 +100,12 @@
                 @if (Model != null)
                 {
                     <tr>
-                        <td> Tottal Day: @Model.TottalDay</td>
-                        <td>Tottal Cow: @Model.TottalCow</td>
+                        <td> Total Day: @Model.TottalDay</td>
+                        <td>Total Cow: @Model.TottalCow</td>
                         <td></td> 
                         <td></td>
                         <td></td>
-                        <td>Tottal Cost: @Model.TottalPrice.ToString("F2")</td>
+                        <td>Total Cost: @Model.TottalPrice.ToString("F2")</td>
                     </tr>
                 }
             </tfoot>
@@ -119,7 +122,9 @@
     $(document).ready(function () {
         $('#ReportMenu').addClass('menu-open');
         $('#VTreatmentReport').addClass('active');
-        var table = $('#example').DataTable();
+        var table = $('#example').DataTable({
+            order: [[0, 'desc']]
+        });
 
     });
 </script>

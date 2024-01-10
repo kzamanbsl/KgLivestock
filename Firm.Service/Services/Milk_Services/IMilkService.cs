@@ -14,6 +14,7 @@ namespace Firm.Service.Services.Milk_Services
         Task<MilkServiceViewModel> GetById(long id);
         Task<MilkServiceViewModel> UpdateMilk(MilkServiceViewModel model);
         Task<bool> Remove(long id);
+        Task<List<MilkServiceViewModel>> MilkingCowList(MilkServiceViewModel model);
         //Task<bool> CompleteVaccine(long id);
     }
 }
